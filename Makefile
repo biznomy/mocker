@@ -18,7 +18,7 @@ TARGET =	$(BINDIR)/main
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
 
-all:	$(TARGET)
+install:	$(TARGET)
 
 clean:
 	rm -f $(OBJS) $(TARGET)

@@ -98,14 +98,14 @@
     "fluctuaton": "100"
   },
   "throughput-tx-dput": {
-    "upper": "9000",
-    "lower": "8000",
-    "fluctuaton": "200"
+    "upper": "60000",
+    "lower": "10000",
+    "fluctuaton": "25000"
   },
   "throughput-tx-tput": {
-    "upper": "11000",
+    "upper": "60000",
     "lower": "10000",
-    "fluctuaton": "200"
+    "fluctuaton": "25000"
   },
   "throughput-rx-dput": {
     "upper": "9000",
