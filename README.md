@@ -1,5 +1,11 @@
 # mocker
   Mock Data using c++ web socket(ws://localhost:8383)
+  
+ > Dependencies for this project is c++ (poco [1.7.8](https://pocoproject.org/)) librrary and c++11 only, tested on ubuntu 16.04)
+ 
+ > download poco from [here](https://pocoproject.org/releases/poco-1.7.8/poco-1.7.8.tar.gz)
+ 
+ > install c++ using command `sudo apt-get install g++ make`
 
 
 **configuration file :**
