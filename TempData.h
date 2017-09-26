@@ -33,6 +33,10 @@ private :
 	TempData(std::string path);
 	static TempData *s_instance;
 	static Poco::AutoPtr<Poco::Util::JSONConfiguration> instanceConf(std::string);
+	void getWirelessTrue(Poco::JSON::Object &object);
+	void getWirelessFalse(Poco::JSON::Object &object);
+	void getSystem(Poco::JSON::Object &object);
+	void getIpv4(Poco::JSON::Object &object);
 
 public :
 	Poco::DateTime date;
@@ -43,8 +47,8 @@ public :
 	void generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation);
 	void generateLong(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
 	void generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation);
-	void getWirelessTrue(Poco::JSON::Object &object);
-	void getWirelessFalse(Poco::JSON::Object &object);
+	void getData(Poco::JSON::Object &object);
+
 };
 
 TempData *TempData::s_instance = 0;
@@ -132,12 +136,54 @@ void TempData::generateDouble(Poco::JSON::Object &object, std::string key, doubl
 
 void TempData::getWirelessTrue(Poco::JSON::Object &object){
 	WirelessTrue wirelessTrue;
-	wirelessTrue.getWirelessTrue(object);
+	Poco::JSON::Object wireless;
+	wirelessTrue.getWirelessTrue(wireless);
+	object.set("wireless", wireless);
 }
 
 void TempData::getWirelessFalse(Poco::JSON::Object &object){
 	WirelessFalse wirelessFalse;
-	wirelessFalse.getWirelessFalse(object);
+	Poco::JSON::Object wireless;
+	wirelessFalse.getWirelessFalse(wireless);
+	object.set("wireless", wireless);
+}
+
+void TempData::getSystem(Poco::JSON::Object &object){
+	Poco::JSON::Object board;
+	board.set("board-version", "2B");
+	object.set("system-board", board);
+
+	Poco::JSON::Object sw;
+	sw.set("running-sw-version", "8.4.6");
+	object.set("system-sw", sw);
+}
+
+void TempData::getIpv4(Poco::JSON::Object &object){
+
+	object.set("address", "10.4.128.212");
+	object.set("subnet-mask", "255.255.255.0");
+
+}
+
+void TempData::getData(Poco::JSON::Object &object){
+	object.set("connection-pii", "locked");
+	object.set("time", "1506401045000");
+
+	Poco::JSON::Object ipv4;
+	this->getIpv4(ipv4);
+	object.set("ipv4", ipv4);
+
+	this->getSystem(object);
+
+	Poco::JSON::Object wirelessFalse;
+	this->getWirelessFalse(wirelessFalse);
+	object.set("wirelessFalse", wirelessFalse);
+
+	Poco::JSON::Object wirelessTrue;
+	this->getWirelessTrue(wirelessTrue);
+	object.set("wirelessTrue", wirelessTrue);
+
+
 }
 
 
