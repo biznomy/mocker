@@ -51,10 +51,10 @@ public:
 		response.setContentType("text/html");
 		std::ostream& ostr = response.send();
 		Poco::JSON::Object testObject;
-		TempData::instance()->getWirelessTrue(testObject);
+		TempData::instance()->getWirelessFalse(testObject);
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
-		ostr << "WirelessTrue : "<< ss.str() << endl;
+		ostr << "WirelessFalse : "<< ss.str() << endl;
 	}
 };
 
@@ -76,7 +76,7 @@ public:
 			do{
 
 				Poco::JSON::Object testObject;
-				TempData::instance()->getWirelessTrue(testObject);
+				TempData::instance()->getWirelessFalse(testObject);
 				std::stringstream ss;
 				testObject.stringify(ss, 2, 2);
 				ws.sendFrame(ss.str().c_str(), ss.str().size(), flags);

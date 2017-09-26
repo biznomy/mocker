@@ -9,6 +9,7 @@
 #define OTFS_SRC_APP_DASHBOARD_TEST_TEMPDATA_H_
 #include "mocker.h"
 #include "wirelessTrue.h"
+#include "wirelessFalse.h"
 #include "Poco/JSON/Parser.h"
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Array.h"
@@ -43,6 +44,7 @@ public :
 	void generateLong(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
 	void generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation);
 	void getWirelessTrue(Poco::JSON::Object &object);
+	void getWirelessFalse(Poco::JSON::Object &object);
 };
 
 TempData *TempData::s_instance = 0;
@@ -131,6 +133,11 @@ void TempData::generateDouble(Poco::JSON::Object &object, std::string key, doubl
 void TempData::getWirelessTrue(Poco::JSON::Object &object){
 	WirelessTrue wirelessTrue;
 	wirelessTrue.getWirelessTrue(object);
+}
+
+void TempData::getWirelessFalse(Poco::JSON::Object &object){
+	WirelessFalse wirelessFalse;
+	wirelessFalse.getWirelessFalse(object);
 }
 
 
