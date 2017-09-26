@@ -3,7 +3,7 @@ CXXFLAGS =	-O2 -g -Wall -fmessage-length=0 -std=c++11
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 BINDIR = ./bin
 
-OBJS =	test.o
+OBJS =	main.o
 
 LIBS = -I poco/ -L poco/lib/Linux/x86_64 \
 	-lPocoFoundation \
@@ -13,7 +13,7 @@ LIBS = -I poco/ -L poco/lib/Linux/x86_64 \
 
 
 
-TARGET =	$(BINDIR)/test
+TARGET =	$(BINDIR)/main
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
