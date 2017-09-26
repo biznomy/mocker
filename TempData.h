@@ -11,11 +11,13 @@
 #include "Poco/JSON/Parser.h"
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Array.h"
+#include "Poco/Util/Application.h"
 
 using Poco::JSON::Parser;
 using Poco::JSON::Object;
 using Poco::JSON::Array;
 using Poco::Dynamic::Var;
+using Poco::Util::Application;
 
 #include "Poco/DateTime.h"
 #include "Poco/Util/JSONConfiguration.h"
@@ -48,32 +50,63 @@ class TempData{
 
 private :
 	TempData();
-	static void generateSnr(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation);
-	static void generateBer(Poco::JSON::Object &object, std::string key, int decimalPlaces, double lower, double upper, double fluctuation);
-	static void generateRssi(Poco::JSON::Object &object, std::string key, int lower, int upper, int fluctuation);
-	static void generateThroughput(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
-	static void generateCorrectable(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation);
+	TempData(std::string path);
+	static TempData *s_instance;
+	static Poco::AutoPtr<Poco::Util::JSONConfiguration> instanceConf(std::string);
+	void generateSnr(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation);
+	void generateBer(Poco::JSON::Object &object, std::string key, int decimalPlaces, double lower, double upper, double fluctuation);
+	void generateRssi(Poco::JSON::Object &object, std::string key, int lower, int upper, int fluctuation);
+	void generateThroughput(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
+	void generateCorrectable(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation);
 
 public :
 	Poco::DateTime date;
 	virtual ~TempData();
-	static Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf ;
-	static void generateInteger(Poco::JSON::Object &object, std::string key, int lower, int upper, int fluctuation);
-	static void generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation);
-	static void generateLong(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
-	static void generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation);
+	static TempData *instance();
+	Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf ;
+	void generateInteger(Poco::JSON::Object &object, std::string key, int lower, int upper, int fluctuation);
+	void generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation);
+	void generateLong(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
+	void generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation);
 	//
 	void generateStaticData(Poco::JSON::Object &object, int choice);
-	static void generateStream(Poco::JSON::Object &object, int maxStream);
+	void generateStream(Poco::JSON::Object &object, int maxStream);
 	std::string getValueFromArrayString(std::string arrayString, int indexCount);
 
 };
 
+TempData *TempData::s_instance = 0;
 
+Poco::AutoPtr<Poco::Util::JSONConfiguration> TempData::instanceConf(std::string path) {
+	Poco::AutoPtr<Poco::Util::JSONConfiguration> temp;
+		try{
+			temp = new Poco::Util::JSONConfiguration(path);
+		}catch(Poco::Exception &e){
+			std::cout << e.displayText()<< std::endl;
+		}
+	return temp;
+}
+
+
+TempData *TempData::instance() {
+	if (!s_instance){
+		s_instance = new TempData("/opt/otfs/install/etc/mocker_conf_8383.json");
+	}
+	return s_instance;
+}
 
 TempData::TempData() {
-//	cout << "open object tempData" << endl;
+
 }
+
+TempData::TempData(std::string path) {
+	try{
+		pConf = TempData::instanceConf(path);
+	}catch(Poco::Exception &e){
+		cout << Poco::format("File Exception Occur:  %s", e.displayText()) << endl;
+	}
+}
+
 TempData::~TempData() {
 //	cout << "close object tempData" << endl;
 }
@@ -291,51 +324,50 @@ void TempData::generateStaticData(Poco::JSON::Object& object, int choice) {
 
 
 void TempData::generateStream(Poco::JSON::Object &object, int maxStream){
-	TempData td;
 	int i = 0;
 	for(;i < maxStream; i++){
 
-		generateBer(object, Poco::format("ber-curr-%d", i), td.pConf->getInt("ber-curr.decimal"), td.pConf->getInt("ber-curr.lower"), td.pConf->getInt("ber-curr.upper"), td.pConf->getInt("ber-curr.fluctuaton"));
-		generateBer(object, Poco::format("ber-cum-%d", i), td.pConf->getInt("ber-cum.decimal"), td.pConf->getInt("ber-cum.lower"), td.pConf->getInt("ber-cum.upper"), td.pConf->getInt("ber-cum.fluctuaton"));
-		generateCorrectable(object, Poco::format("cw_correctable-%d", i), Mocker::getFloat(td.pConf->getString("cw_correctable.lower")), Mocker::getFloat(td.pConf->getString("cw_correctable.upper")), Mocker::getFloat(td.pConf->getString("cw_correctable.fluctuaton")));
-		generateCorrectable(object, Poco::format("cw_uncorrectable-%d", i), Mocker::getFloat(td.pConf->getString("cw_uncorrectable.lower")), Mocker::getFloat(td.pConf->getString("cw_uncorrectable.upper")), Mocker::getFloat(td.pConf->getString("cw_uncorrectable.fluctuaton")));
-		generateCorrectable(object, Poco::format("cw_total-%d", i), Mocker::getFloat(td.pConf->getString("cw_total.lower")), Mocker::getFloat(td.pConf->getString("cw_total.upper")), Mocker::getFloat(td.pConf->getString("cw_total.fluctuaton")));
-		generateSnr(object, Poco::format("snr-curr-%d", i), Mocker::getFloat(td.pConf->getString("snr-curr.lower")), Mocker::getFloat(td.pConf->getString("snr-curr.upper")), Mocker::getFloat(td.pConf->getString("snr-curr.fluctuaton")));
-		generateSnr(object, Poco::format("snr-avg-%d", i), Mocker::getFloat(td.pConf->getString("snr-avg.lower")), Mocker::getFloat(td.pConf->getString("snr-avg.upper")), Mocker::getFloat(td.pConf->getString("snr-avg.fluctuaton")));
-		generateSnr(object, Poco::format("snr-min-%d", i), Mocker::getFloat(td.pConf->getString("snr-min.lower")), Mocker::getFloat(td.pConf->getString("snr-min.upper")), Mocker::getFloat(td.pConf->getString("snr-min.fluctuaton")));
-		generateSnr(object, Poco::format("snr-max-%d", i), Mocker::getFloat(td.pConf->getString("snr-max.lower")), Mocker::getFloat(td.pConf->getString("snr-max.upper")), Mocker::getFloat(td.pConf->getString("snr-max.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-rx-dput-%d", i), Mocker::getLong(td.pConf->getString("throughput-rx-dput.lower")), Mocker::getLong(td.pConf->getString("throughput-rx-dput.upper")), Mocker::getLong(td.pConf->getString("throughput-rx-dput.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-rx-tput-%d", i), Mocker::getLong(td.pConf->getString("throughput-rx-tput.lower")), Mocker::getLong(td.pConf->getString("throughput-rx-tput.upper")), Mocker::getLong(td.pConf->getString("throughput-rx-tput.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-tx-dput-%d", i), Mocker::getLong(td.pConf->getString("throughput-tx-dput.lower")), Mocker::getLong(td.pConf->getString("throughput-tx-dput.upper")), Mocker::getLong(td.pConf->getString("throughput-tx-dput.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-tx-tput-%d", i), Mocker::getLong(td.pConf->getString("throughput-tx-tput.lower")), Mocker::getLong(td.pConf->getString("throughput-tx-tput.upper")), Mocker::getLong(td.pConf->getString("throughput-tx-tput.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-rx-frames-%d", i), Mocker::getLong(td.pConf->getString("throughput-rx-frames.lower")), Mocker::getLong(td.pConf->getString("throughput-rx-frames.upper")), Mocker::getLong(td.pConf->getString("throughput-rx-frames.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-tx-frames-%d", i), Mocker::getLong(td.pConf->getString("throughput-tx-frames.lower")), Mocker::getLong(td.pConf->getString("throughput-tx-frames.upper")), Mocker::getLong(td.pConf->getString("throughput-tx-frames.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-rx-errorrate-%d", i), Mocker::getLong(td.pConf->getString("throughput-rx-errorrate.lower")), Mocker::getLong(td.pConf->getString("throughput-rx-errorrate.upper")), Mocker::getLong(td.pConf->getString("throughput-rx-errorrate.fluctuaton")));
-		generateThroughput(object, Poco::format("throughput-error-crc-%d", i), Mocker::getLong(td.pConf->getString("throughput-error-crc.lower")), Mocker::getLong(td.pConf->getString("throughput-error-crc.upper")), Mocker::getLong(td.pConf->getString("throughput-error-crc.fluctuaton")));
-		generateRssi(object, Poco::format("radio-rssi-%d", i), td.pConf->getInt("radio-rssi.lower"), td.pConf->getInt("radio-rssi.upper"), td.pConf->getInt("radio-rssi.fluctuaton"));
-		generateFloat(object, Poco::format("radio-tx-power-%d", i), Mocker::getFloat(td.pConf->getString("radio-tx-power.lower")), Mocker::getFloat(td.pConf->getString("radio-tx-power.upper")), Mocker::getFloat(td.pConf->getString("radio-tx-power.fluctuaton")));
-		generateInteger(object, Poco::format("connection-mcs-%d", i), td.pConf->getInt("connection-mcs.lower"), td.pConf->getInt("connection-mcs.upper"), td.pConf->getInt("connection-mcs.fluctuaton"));
-		generateFloat(object, Poco::format("tx-attenuation-%d", i), Mocker::getFloat(td.pConf->getString("tx-attenuation.lower")), Mocker::getFloat(td.pConf->getString("tx-attenuation.upper")), Mocker::getFloat(td.pConf->getString("tx-attenuation.fluctuaton")));
+		generateBer(object, Poco::format("ber-curr-%d", i), TempData::s_instance->pConf->getInt("ber-curr.decimal"), TempData::s_instance->pConf->getInt("ber-curr.lower"), TempData::s_instance->pConf->getInt("ber-curr.upper"), TempData::s_instance->pConf->getInt("ber-curr.fluctuaton"));
+		generateBer(object, Poco::format("ber-cum-%d", i), TempData::s_instance->pConf->getInt("ber-cum.decimal"), TempData::s_instance->pConf->getInt("ber-cum.lower"), TempData::s_instance->pConf->getInt("ber-cum.upper"), TempData::s_instance->pConf->getInt("ber-cum.fluctuaton"));
+		generateCorrectable(object, Poco::format("cw_correctable-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_correctable.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_correctable.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_correctable.fluctuaton")));
+		generateCorrectable(object, Poco::format("cw_uncorrectable-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_uncorrectable.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_uncorrectable.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_uncorrectable.fluctuaton")));
+		generateCorrectable(object, Poco::format("cw_total-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_total.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_total.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("cw_total.fluctuaton")));
+		generateSnr(object, Poco::format("snr-curr-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-curr.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-curr.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-curr.fluctuaton")));
+		generateSnr(object, Poco::format("snr-avg-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-avg.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-avg.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-avg.fluctuaton")));
+		generateSnr(object, Poco::format("snr-min-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-min.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-min.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-min.fluctuaton")));
+		generateSnr(object, Poco::format("snr-max-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-max.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-max.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("snr-max.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-rx-dput-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-dput.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-dput.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-dput.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-rx-tput-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-tput.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-tput.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-tput.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-tx-dput-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-dput.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-dput.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-dput.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-tx-tput-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-tput.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-tput.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-tput.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-rx-frames-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-frames.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-frames.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-frames.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-tx-frames-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-frames.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-frames.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-tx-frames.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-rx-errorrate-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-errorrate.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-errorrate.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-rx-errorrate.fluctuaton")));
+		generateThroughput(object, Poco::format("throughput-error-crc-%d", i), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-error-crc.lower")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-error-crc.upper")), Mocker::getLong(TempData::s_instance->pConf->getString("throughput-error-crc.fluctuaton")));
+		generateRssi(object, Poco::format("radio-rssi-%d", i), TempData::s_instance->pConf->getInt("radio-rssi.lower"), TempData::s_instance->pConf->getInt("radio-rssi.upper"), TempData::s_instance->pConf->getInt("radio-rssi.fluctuaton"));
+		generateFloat(object, Poco::format("radio-tx-power-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("radio-tx-power.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("radio-tx-power.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("radio-tx-power.fluctuaton")));
+		generateInteger(object, Poco::format("connection-mcs-%d", i), TempData::s_instance->pConf->getInt("connection-mcs.lower"), TempData::s_instance->pConf->getInt("connection-mcs.upper"), TempData::s_instance->pConf->getInt("connection-mcs.fluctuaton"));
+		generateFloat(object, Poco::format("tx-attenuation-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("tx-attenuation.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("tx-attenuation.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("tx-attenuation.fluctuaton")));
 	}
 
 
-	td.generateStaticData(object, BANDWIDTH);
-	td.generateStaticData(object, BANDWIDTH_STATUS);
-	td.generateStaticData(object, CONNECTION_IP);
-	td.generateStaticData(object, CONNECTION_PII);
-	td.generateStaticData(object, CONNECTION_ROLE);
-	td.generateStaticData(object, CONNECTION_SSID);
-	td.generateStaticData(object, CONNECTION_STATUS);
-	td.generateStaticData(object, FREQUENCY);
-	td.generateStaticData(object, HUB_RCV_GAIN_LEVEL);
-	td.generateStaticData(object, HUB_STATE);
-	td.generateStaticData(object, RADIO_ADMIN_MODE);
-	td.generateStaticData(object, TDDSCHEDULE);
-	td.generateStaticData(object, VERSION_HW);
-	td.generateStaticData(object, VERSION_SW);
-	td.generateStaticData(object, WIRELESS_MODE);
-	td.generateStaticData(object, WIRELESS_RADIO_STATUS_TX_POWER);
-	td.generateStaticData(object, WIRELESS_RADIO_TX_POWER);
+	generateStaticData(object, BANDWIDTH);
+	generateStaticData(object, BANDWIDTH_STATUS);
+	generateStaticData(object, CONNECTION_IP);
+	generateStaticData(object, CONNECTION_PII);
+	generateStaticData(object, CONNECTION_ROLE);
+	generateStaticData(object, CONNECTION_SSID);
+	generateStaticData(object, CONNECTION_STATUS);
+	generateStaticData(object, FREQUENCY);
+	generateStaticData(object, HUB_RCV_GAIN_LEVEL);
+	generateStaticData(object, HUB_STATE);
+	generateStaticData(object, RADIO_ADMIN_MODE);
+	generateStaticData(object, TDDSCHEDULE);
+	generateStaticData(object, VERSION_HW);
+	generateStaticData(object, VERSION_SW);
+	generateStaticData(object, WIRELESS_MODE);
+	generateStaticData(object, WIRELESS_RADIO_STATUS_TX_POWER);
+	generateStaticData(object, WIRELESS_RADIO_TX_POWER);
 
 
 

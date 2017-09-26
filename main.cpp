@@ -5,6 +5,7 @@
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTTPServerParams.h"
+#include "Poco/ThreadPool.h"
 #include "Poco/Net/ServerSocket.h"
 #include "Poco/Net/WebSocket.h"
 #include "Poco/Net/NetException.h"
@@ -39,7 +40,6 @@ using Poco::Util::HelpFormatter;
 using Poco::Path;
 Path p;
 
-Poco::AutoPtr<Poco::Util::JSONConfiguration> TempData::pConf = new Poco::Util::JSONConfiguration("/opt/otfs/install/etc/mocker_conf_8383.json");
 class PageRequestHandler: public HTTPRequestHandler
 	/// Return a HTML document with some JavaScript creating
 	/// a WebSocket connection.
@@ -51,7 +51,7 @@ public:
 		response.setContentType("text/html");
 		std::ostream& ostr = response.send();
 		Poco::JSON::Object testObject;
-		TempData::generateStream(testObject, 2);
+		TempData::instance()->generateStream(testObject, 2);
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
 		ostr << "test : "<< ss.str() << endl;
@@ -63,8 +63,7 @@ class WebSocketRequestHandler: public HTTPRequestHandler
 	/// Handle a WebSocket connection.
 {
 public:
-	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
-	{
+	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response){
 		Application& app = Application::instance();
 		try
 		{
@@ -74,16 +73,16 @@ public:
 			int flags;
 			int n;
 			n = ws.receiveFrame(buffer, sizeof(buffer), flags);
-			do
-			{
+			do{
+
 				Poco::JSON::Object testObject;
-				TempData::generateStream(testObject, 2);
+				TempData::instance()->generateStream(testObject, 2);
 				std::stringstream ss;
 				testObject.stringify(ss, 2, 2);
 				ws.sendFrame(ss.str().c_str(), ss.str().size(), flags);
 				usleep(SAMPLE_INTERVAL);
-			}
-			while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
+
+			}while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
 			app.logger().information("WebSocket connection closed.");
 		}
 		catch (WebSocketException& exc)
@@ -183,21 +182,27 @@ protected:
 		helpFormatter.format(std::cout);
 	}
 
-	int main(const std::vector<std::string>& args)
-	{
-		if (_helpRequested)
-		{
+	int main(const std::vector<std::string>& args){
+
+		if (_helpRequested){
+
 			displayHelp();
-		}
-		else
-		{
+
+		}else{
+
 			// get parameters from configuration file
 			unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 8383);
 
 			// set-up a server socket
 			ServerSocket svs(port);
+
+
+			HTTPServerParams::Ptr params = new HTTPServerParams;
+			params->setMaxQueued(1);
+			params->setMaxThreads(1);
+
 			// set-up a HTTPServer instance
-			HTTPServer srv(new RequestHandlerFactory, svs, new HTTPServerParams);
+			HTTPServer srv(new RequestHandlerFactory, svs, params);
 			// start the HTTPServer
 			srv.start();
 			// wait for CTRL-C or kill
