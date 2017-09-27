@@ -24,14 +24,17 @@ using Poco::Util::Application;
 #include "Poco/Util/JSONConfiguration.h"
 #include "Poco/AutoPtr.h"
 
+using Poco::Util::JSONConfiguration;
+
 
 class WirelessTrue{
 
 private :
+
 //NOTE Wireless True Start
-	void getHubWirelessTrue(Poco::JSON::Object &object);
-	void getStatusWirelessTrue(Poco::JSON::Object &object);
-	void getStatusRStreamsWirelessTrue(Poco::JSON::Array &array);
+	void getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getStatusWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 //NOTE Wireless True End
 
 public :
@@ -42,7 +45,7 @@ public :
 	void generateLong(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
 	void generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation);
 
-	void getWirelessTrue(Poco::JSON::Object &object);
+	void getWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 };
 
 
@@ -96,9 +99,8 @@ void WirelessTrue::generateDouble(Poco::JSON::Object &object, std::string key, d
 	object.set(key, Mocker::getRandomMeanDouble(lower, upper, fluctuation));
 }
 
+void WirelessTrue::getWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
-
-void WirelessTrue::getWirelessTrue(Poco::JSON::Object &object){
 	//blank object
 	Poco::JSON::Object blank;
 
@@ -107,59 +109,65 @@ void WirelessTrue::getWirelessTrue(Poco::JSON::Object &object){
 	object.set("downlink", blank);
 	//hub wireless true
 	Poco::JSON::Object hub;
-	this->getHubWirelessTrue(hub);
+	this->getHubWirelessTrue(hub, pConf);
 	object.set("hub", hub);
 	object.set("interference-detection", blank);
 	object.set("phy", blank);
-	object.set("radio", "");
-	object.set("remotes", "");
+	object.set("radio", pConf->getString("wirelessTrue.wireless.radio"));
+	object.set("remotes", pConf->getString("wirelessTrue.wireless.remotes"));
 	Poco::JSON::Object status;
-	this->getStatusWirelessTrue(status);
+	this->getStatusWirelessTrue(status, pConf);
 	object.set("status", status);
 	object.set("uplink", blank);
 }
 
 
-void WirelessTrue::getHubWirelessTrue(Poco::JSON::Object &object){
+void WirelessTrue::getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object status;
-	status.set("channel-profile", 0);
-	status.set("rcv-gain-level", 30);
-	status.set("schedule", "DD");
-	status.set("ssid", "CohereSSID");
-	status.set("state", "Unidirectional");
+	status.set("channel-profile", pConf->getString("wirelessTrue.wireless.hub.status.channel-profile"));
+	status.set("rcv-gain-level", pConf->getString("wirelessTrue.wireless.hub.status.rcv-gain-level"));
+	status.set("schedule", pConf->getString("wirelessTrue.wireless.hub.status.schedule"));
+	status.set("ssid", pConf->getString("wirelessTrue.wireless.hub.status.ssid"));
+	status.set("state", pConf->getString("wirelessTrue.wireless.hub.status.state"));
 	object.set("status", status);
 
 }
 
-void WirelessTrue::getStatusWirelessTrue(Poco::JSON::Object &status){
+void WirelessTrue::getStatusWirelessTrue(Poco::JSON::Object &status, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
-	status.set("admin-state", "enable");
-	status.set("mode", "p2mp");
-	status.set("role", "hub");
+	status.set("admin-state", pConf->getString("wirelessTrue.wireless.status.admin-state"));
+	status.set("mode", pConf->getString("wirelessTrue.wireless.status.mode"));
+	status.set("role", pConf->getString("wirelessTrue.wireless.status.role"));
 
 	Poco::JSON::Array rstreams;
-	this->getStatusRStreamsWirelessTrue(rstreams);
+	this->getStatusRStreamsWirelessTrue(rstreams, pConf);
 	status.set("rstreams", rstreams);//need 2 streams, currently 1
 
 	Poco::JSON::Array streams;
-	this->getStatusRStreamsWirelessTrue(streams);
+	this->getStatusRStreamsWirelessTrue(streams, pConf);
 	status.set("streams", streams);
 
 	Poco::JSON::Object throughput;
-	throughput.set("L1", 11194);
-	throughput.set("L2", 172);
+	throughput.set("L1", pConf->getString("wirelessTrue.wireless.status.throughput.L1"));
+	throughput.set("L2", pConf->getString("wirelessTrue.wireless.status.throughput.L2"));
 	status.set("throughput", throughput);
 
-	status.set("uptime", "24963");
+	status.set("uptime", pConf->getString("wirelessTrue.wireless.status.uptime"));
 
 
 }
 
-void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array){
-	Poco::JSON::Object object1;
-	object1.set("id", 0);
-	object1.set("name", "NOEXISTS");
+void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
+
+//	cout <<  "streams" << pConf->getString("wirelessTrue.wireless.status.rstreams") << endl;
+
+
+
+	Poco::JSON::Object object;
+
+	object.set("id", 0);
+	object.set("name", "NOEXISTS");
 
 	Poco::JSON::Object obj;
 	Poco::JSON::Object ber;
@@ -207,8 +215,8 @@ void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array){
 
 	Poco::JSON::Array remotes;
 	remotes.add(obj);
-	object1.set("remotes", remotes);
-	array.add(object1);
+	object.set("remotes", remotes);
+	array.add(object);
 }
 
 

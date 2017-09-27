@@ -66,7 +66,7 @@ Poco::AutoPtr<Poco::Util::JSONConfiguration> TempData::instanceConf(std::string 
 
 TempData *TempData::instance() {
 	if (!s_instance){
-		s_instance = new TempData("/opt/otfs/install/etc/mocker_conf_8383.json");
+		s_instance = new TempData("/opt/otfs/install/etc/mocker.8.X.json");
 	}
 	return s_instance;
 }
@@ -137,7 +137,7 @@ void TempData::generateDouble(Poco::JSON::Object &object, std::string key, doubl
 void TempData::getWirelessTrue(Poco::JSON::Object &object){
 	WirelessTrue wirelessTrue;
 	Poco::JSON::Object wireless;
-	wirelessTrue.getWirelessTrue(wireless);
+	wirelessTrue.getWirelessTrue(wireless, this->pConf);
 	object.set("wireless", wireless);
 }
 

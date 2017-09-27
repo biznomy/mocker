@@ -1,0 +1,182 @@
+{
+  "connection-pii": "locked",
+  "ipv4": {
+    "address": "10.4.128.212",
+    "subnet-mask": "255.255.255.0"
+  },
+  "system-board": {
+    "board-version": "2B"
+  },
+  "system-sw": {
+    "running-sw-version": "8.4.6"
+  },
+  "time": "1506401045000",
+  "wirelessFalse": {
+    "wireless": {
+      "admin-state": "enable",
+      "chest": {
+        "dfe-disable": "NOEXISTS",
+        "dfe-len": "31",
+        "doppler-bw": "400"
+      },
+      "cpe": {
+        "id": "1"
+      },
+      "downlink": {},
+      "hub": {
+        "channel-profile": 0,
+        "name": "CohereHub",
+        "rcv-gain-level": 26,
+        "schedule": "DL-Only",
+        "ssid": "CohereSSID",
+        "status": {}
+      },
+      "interference-detection": {
+        "admin-mode": "disable",
+        "threshold": "-70"
+      },
+      "mode": "p2mp",
+      "phy": {
+        "channel-post": "103",
+        "channel-pre": "24",
+        "cyclic-postfix": "24",
+        "cyclic-prefix": "40"
+      },
+      "radio": {
+        "admin-mode": "disable",
+        "antenna": {
+          "antennaID": "0",
+          "rx-gain": "30.0",
+          "status": {},
+          "tx-attenuation": "15000.0"
+        },
+        "automatic-gain": "on",
+        "bandwidth": "10MHz",
+        "beam-id": "0",
+        "frequency": "3612.0",
+        "link-distance": "5000",
+        "status": {},
+        "sto": "on",
+        "target-rssi": "25",
+        "tx-power": "NOEXISTS",
+        "txSwap": "true"
+      },
+      "remotes": {
+        "admin-state": "enable",
+        "downlink": {
+          "streams": {
+            "id": "1",
+            "mcs": "QAM4",
+            "weight": "10"
+          }
+        },
+        "id": 1,
+        "name": "NOEXISTS",
+        "status": {
+          "throughput": {}
+        },
+        "uplink": {
+          "override": {
+            "power": "NOEXISTS",
+            "timing": "NOEXISTS"
+          },
+          "streams": {
+            "id": "1",
+            "mcs": "QAM4",
+            "weight": "10"
+          }
+        }
+      },
+      "status": {
+        "rstreams": {
+          "id": 0,
+          "remotes": {
+            "ber": {},
+            "rid": 1,
+            "snr": {},
+            "throughput": {
+              "errors": {},
+              "rx": {},
+              "tx": {}
+            }
+          }
+        },
+        "throughput": {}
+      },
+      "uplink": {}
+    }
+  },
+  "wirelessTrue": {
+    "wireless": {
+      "chest": {},
+      "cpe": {},
+      "downlink": {},
+      "hub": {
+        "status": {
+          "channel-profile": 0,
+          "rcv-gain-level": 30,
+          "schedule": "DD",
+          "ssid": "CohereSSID",
+          "state": "Unidirectional"
+        }
+      },
+      "interference-detection": {},
+      "phy": {},
+      "radio": "",
+      "remotes": "",
+      "status": {
+        "admin-state": "enable",
+        "mode": "p2mp",
+        "role": "hub",
+        "rstreams": {
+          "streams-start": 1,
+          "streams-end": 2,
+          "name": "NOEXISTS",
+          "remotes": {
+            "ber": {
+              "codeword": {
+                "correctable": 0,
+                "total": 0,
+                "uncorrectable": 0
+              },
+              "last": 0,
+              "total": 0
+            },
+            "mcs": "QAM4",
+            "resources": 0,
+            "rid": 1,
+            "snr": {
+              "average": "NOEXISTS",
+              "current": "NOEXISTS",
+              "maximum": "NOEXISTS",
+              "minimum": "NOEXISTS",
+              "variance": "NOEXISTS"
+            },
+            "throughput": {
+              "errors": {
+                "frames": "NOEXISTS",
+                "rate": "NOEXISTS"
+              },
+              "rx": {
+                "capacity": "NOEXISTS",
+                "frames": "NOEXISTS",
+                "rate": "NOEXISTS"
+              },
+              "tx": {
+                "capacity": 5197,
+                "frames": 9484278,
+                "rate": 0
+              }
+            }
+          }
+        },
+        "throughput": {
+          "L1": 11194,
+          "L2": 172
+        },
+        "uptime": "24963"
+      },
+      "uplink": {}
+    }
+  }
+}
