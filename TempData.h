@@ -14,7 +14,7 @@
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Array.h"
 #include "Poco/Util/Application.h"
-
+#include "Poco/Timestamp.h"
 using Poco::JSON::Parser;
 using Poco::JSON::Object;
 using Poco::JSON::Array;
@@ -150,24 +150,28 @@ void TempData::getWirelessFalse(Poco::JSON::Object &object){
 
 void TempData::getSystem(Poco::JSON::Object &object){
 	Poco::JSON::Object board;
-	board.set("board-version", "2B");
+	board.set("board-version", this->pConf->getString("system-board.board-version"));
 	object.set("system-board", board);
 
 	Poco::JSON::Object sw;
-	sw.set("running-sw-version", "8.4.6");
+	sw.set("running-sw-version", this->pConf->getString("system-sw.running-sw-version"));
 	object.set("system-sw", sw);
 }
 
 void TempData::getIpv4(Poco::JSON::Object &object){
 
-	object.set("address", "10.4.128.212");
-	object.set("subnet-mask", "255.255.255.0");
+	object.set("address", this->pConf->getString("ipv4.address"));
+	object.set("subnet-mask", this->pConf->getString("ipv4.subnet-mask"));
 
 }
 
 void TempData::getData(Poco::JSON::Object &object){
-	object.set("connection-pii", "locked");
-	object.set("time", "1506401045000");
+	object.set("connection-pii", this->pConf->getString("connection-pii"));
+
+	Poco::Timestamp now;
+	long time_value = now.epochTime() * 1000;
+
+	object.set("time", time_value);
 
 	Poco::JSON::Object ipv4;
 	this->getIpv4(ipv4);
