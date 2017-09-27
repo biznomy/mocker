@@ -29,12 +29,12 @@ class WirelessFalse{
 
 private :
 //NOTE Wireless False Start
-	void getChestWirelessFalse(Poco::JSON::Object &object);
-	void getCpeWirelessFalse(Poco::JSON::Object &object);
-	void getHubWirelessFalse(Poco::JSON::Object &object);
-	void getInterferenceDetectionWirelessFalse(Poco::JSON::Object &object);
-	void getPhyWirelessFalse(Poco::JSON::Object &object);
-	void getRadioWirelessFalse(Poco::JSON::Object &object);
+	void getChestWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getCpeWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getHubWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getInterferenceDetectionWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getPhyWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getRadioWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getRemoteWirelessFalse(Poco::JSON::Array &array);
 	void getRemoteStreamsWirelessFalse(Poco::JSON::Array& streams);
 	void getStatusWirelessFalse(Poco::JSON::Object &object);
@@ -50,7 +50,7 @@ public :
 	void generateLong(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation);
 	void generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation);
 
-	void getWirelessFalse(Poco::JSON::Object &object);
+	void getWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 };
 
 
@@ -106,37 +106,39 @@ void WirelessFalse::generateDouble(Poco::JSON::Object &object, std::string key, 
 
 
 
-void WirelessFalse::getWirelessFalse(Poco::JSON::Object &object){
+void WirelessFalse::getWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
+
 	//blank object
 	Poco::JSON::Object blank;
-
-	object.set("admin-state", "enable");
+	object.set("admin-state", pConf->getString("wirelessFalse.wireless.admin-state"));
 
 	Poco::JSON::Object chest;
-	this->getChestWirelessFalse(chest);
+	this->getChestWirelessFalse(chest, pConf);
 	object.set("chest", chest);
 
 	Poco::JSON::Object cpe;
-	this->getCpeWirelessFalse(cpe);
+	this->getCpeWirelessFalse(cpe, pConf);
 	object.set("cpe", cpe);
 	object.set("downlink", blank);
 
 	Poco::JSON::Object hub;
-	this->getHubWirelessFalse(hub);
+	this->getHubWirelessFalse(hub, pConf);
 	object.set("hub", hub);
 
 	Poco::JSON::Object interference_detection;
-	this->getInterferenceDetectionWirelessFalse(interference_detection);
+	this->getInterferenceDetectionWirelessFalse(interference_detection, pConf);
 	object.set("interference-detection", interference_detection);
 
-	object.set("mode", "p2mp");
+	object.set("mode", pConf->getString("wirelessFalse.wireless.mode"));
+
 
 	Poco::JSON::Object phy;
-	this->getPhyWirelessFalse(phy);
+	this->getPhyWirelessFalse(phy, pConf);
 	object.set("phy", phy);
 
+	cout << pConf->getString("wirelessFalse.wireless.radio") << endl;
 	Poco::JSON::Object radio;
-	this->getRadioWirelessFalse(radio);
+	this->getRadioWirelessFalse(radio, pConf);
 	object.set("radio", radio);
 
 	Poco::JSON::Array remotes;
@@ -152,64 +154,65 @@ void WirelessFalse::getWirelessFalse(Poco::JSON::Object &object){
 }
 
 
-void WirelessFalse::getChestWirelessFalse(Poco::JSON::Object &object){
-	object.set("dfe-disable", "NOEXISTS");
-	object.set("dfe-len", "31");
-	object.set("doppler-bw", "400");
+void WirelessFalse::getChestWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
+	object.set("dfe-disable", pConf->getString("wirelessFalse.wireless.chest.dfe-disable"));
+	object.set("dfe-len", pConf->getString("wirelessFalse.wireless.chest.dfe-len"));
+	object.set("doppler-bw", pConf->getString("wirelessFalse.wireless.chest.doppler-bw"));
 }
 
-void WirelessFalse::getCpeWirelessFalse(Poco::JSON::Object &object){
-	object.set("id", "1");
+void WirelessFalse::getCpeWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
+	object.set("id", pConf->getString("wirelessFalse.wireless.cpe.id"));
 }
 
-void WirelessFalse::getHubWirelessFalse(Poco::JSON::Object &object){
+void WirelessFalse::getHubWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	Poco::JSON::Object blank;
-	object.set("name", "CohereHub");
-	object.set("channel-profile", 0);
-	object.set("rcv-gain-level", 26);
-	object.set("schedule", "DL-Only");
-	object.set("ssid", "CohereSSID");
+	object.set("name", pConf->getString("wirelessFalse.wireless.hub.name"));
+	object.set("channel-profile", pConf->getString("wirelessFalse.wireless.hub.channel-profile"));
+	object.set("rcv-gain-level", pConf->getString("wirelessFalse.wireless.hub.rcv-gain-level"));
+	object.set("schedule", pConf->getString("wirelessFalse.wireless.hub.schedule"));
+	object.set("ssid", pConf->getString("wirelessFalse.wireless.hub.ssid"));
 	object.set("status", blank);
 }
 
 
-void WirelessFalse::getInterferenceDetectionWirelessFalse(Poco::JSON::Object &object){
-	object.set("admin-mode", "disable");
-	object.set("threshold", "-70");
+void WirelessFalse::getInterferenceDetectionWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
+
+	object.set("admin-mode", pConf->getString("wirelessFalse.wireless.interference-detection.admin-mode"));
+	object.set("threshold", pConf->getString("wirelessFalse.wireless.interference-detection.threshold"));
 }
 
-void WirelessFalse::getPhyWirelessFalse(Poco::JSON::Object &object){
-	object.set("channel-post", "103");
-	object.set("channel-pre", "24");
-	object.set("cyclic-postfix", "24");
-	object.set("cyclic-prefix", "40");
+void WirelessFalse::getPhyWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
+	object.set("channel-post", pConf->getString("wirelessFalse.wireless.phy.channel-post"));
+	object.set("channel-pre", pConf->getString("wirelessFalse.wireless.phy.channel-pre"));
+	object.set("cyclic-postfix", pConf->getString("wirelessFalse.wireless.phy.cyclic-postfix"));
+	object.set("cyclic-prefix", pConf->getString("wirelessFalse.wireless.phy.cyclic-prefix"));
 }
 
-void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object){
+void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object blank;
-	object.set("admin-mode", "disable");
+	object.set("admin-mode", pConf->getString("wirelessFalse.wireless.radio.admin-mode"));
 
 	Poco::JSON::Array antenna;
 	Poco::JSON::Object antennaObj;
 
-	antennaObj.set("antennaID", "0");
-	antennaObj.set("rx-gain", "30.0");
+	antennaObj.set("antennaID", pConf->getString("wirelessFalse.wireless.radio.antenna.antennaID"));
+	antennaObj.set("rx-gain", pConf->getString("wirelessFalse.wireless.radio.antenna.rx-gain"));
 	antennaObj.set("status", blank);
-	antennaObj.set("tx-attenuation", "15000.0");
+	antennaObj.set("tx-attenuation", pConf->getString("wirelessFalse.wireless.radio.antenna.tx-attenuation"));
 	antenna.add(antennaObj);
 	object.set("antenna", antenna);
 
-	object.set("automatic-gain", "on");
-	object.set("bandwidth", "10MHz");
-	object.set("beam-id", "0");
-	object.set("frequency", "3612.0");
-	object.set("link-distance", "5000");
+	object.set("automatic-gain", pConf->getString("wirelessFalse.wireless.radio.automatic-gain"));
+	object.set("bandwidth", pConf->getString("wirelessFalse.wireless.radio.bandwidth"));
+	object.set("beam-id", pConf->getString("wirelessFalse.wireless.radio.beam-id"));
+	object.set("frequency", pConf->getString("wirelessFalse.wireless.radio.frequency"));
+	object.set("link-distance", pConf->getString("wirelessFalse.wireless.radio.link-distance"));
 	object.set("status", blank);
-	object.set("sto", "on");
-	object.set("target-rssi", "25");
-	object.set("tx-power", "NOEXISTS");
-	object.set("txSwap", "true");
+	object.set("sto", pConf->getString("wirelessFalse.wireless.radio.sto"));
+	object.set("target-rssi", pConf->getString("wirelessFalse.wireless.radio.target-rssi"));
+	object.set("tx-power", pConf->getString("wirelessFalse.wireless.radio.tx-power"));
+	object.set("txSwap", pConf->getString("wirelessFalse.wireless.radio.txSwap"));
 
 }
 

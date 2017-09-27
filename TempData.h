@@ -144,7 +144,7 @@ void TempData::getWirelessTrue(Poco::JSON::Object &object){
 void TempData::getWirelessFalse(Poco::JSON::Object &object){
 	WirelessFalse wirelessFalse;
 	Poco::JSON::Object wireless;
-	wirelessFalse.getWirelessFalse(wireless);
+	wirelessFalse.getWirelessFalse(wireless, this->pConf);
 	object.set("wireless", wireless);
 }
 
