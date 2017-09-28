@@ -35,10 +35,10 @@ private :
 	void getInterferenceDetectionWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getPhyWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getRadioWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
-	void getRemoteWirelessFalse(Poco::JSON::Array &array);
-	void getRemoteStreamsWirelessFalse(Poco::JSON::Array& streams);
-	void getStatusWirelessFalse(Poco::JSON::Object &object);
-	void getStatusRStreamsWirelessFalse(Poco::JSON::Array &array);
+	void getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getRemoteStreamsWirelessFalse(Poco::JSON::Array& streams, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getStatusWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void getStatusRStreamsWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 
 //NOTE Wireless False End
 
@@ -136,18 +136,16 @@ void WirelessFalse::getWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<P
 	this->getPhyWirelessFalse(phy, pConf);
 	object.set("phy", phy);
 
-	cout << pConf->getString("wirelessFalse.wireless.radio") << endl;
 	Poco::JSON::Object radio;
 	this->getRadioWirelessFalse(radio, pConf);
 	object.set("radio", radio);
 
 	Poco::JSON::Array remotes;
-	this->getRemoteWirelessFalse(remotes);
+	this->getRemoteWirelessFalse(remotes, pConf);
 	object.set("remotes", remotes);
 
-
 	Poco::JSON::Object status;
-	this->getStatusWirelessFalse(status);
+	this->getStatusWirelessFalse(status, pConf);
 	object.set("status", status);
 
 	object.set("uplink", blank);
@@ -216,29 +214,20 @@ void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::Auto
 
 }
 
-void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::JSON::Array& streams) {
-	Poco::JSON::Object stream;
-	stream.set("id", "1");
-	stream.set("mcs", "QAM4");
-	stream.set("weight", "10");
-	streams.add(stream);
-}
-
-void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array){
+void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	Poco::JSON::Object blank;
 	Poco::JSON::Object remote;
 
-	remote.set("admin-state", "enable");
-
+	remote.set("admin-state", pConf->getString("wirelessFalse.wireless.remotes.admin-state"));
 
 	Poco::JSON::Object downlink;
 	Poco::JSON::Array downlink_streams;
-	this->getRemoteStreamsWirelessFalse(downlink_streams);
+	this->getRemoteStreamsWirelessFalse(downlink_streams, pConf);
 	downlink.set("streams", downlink_streams);
 	remote.set("downlink", downlink);
 
-	remote.set("id", 1);
-	remote.set("name", "NOEXISTS");
+	remote.set("id", pConf->getString("wirelessFalse.wireless.remotes.id"));
+	remote.set("name", pConf->getString("wirelessFalse.wireless.remotes.name"));
 
 	Poco::JSON::Object status;
 	status.set("throughput", blank);
@@ -246,12 +235,12 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array){
 
 	Poco::JSON::Object uplink;
 	Poco::JSON::Object override;
-	override.set("power", "NOEXISTS");
-	override.set("timing", "NOEXISTS");
+	override.set("power", pConf->getString("wirelessFalse.wireless.remotes.uplink.override.power"));
+	override.set("timing", pConf->getString("wirelessFalse.wireless.remotes.uplink.override.timing"));
 	uplink.set("override", override);
 
 	Poco::JSON::Array streams;
-	this->getRemoteStreamsWirelessFalse(streams);
+	this->getRemoteStreamsWirelessFalse(streams, pConf);
 	uplink.set("streams", streams);
 
 	remote.set("uplink", uplink);
@@ -260,25 +249,35 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array){
 
 }
 
-void WirelessFalse::getStatusWirelessFalse(Poco::JSON::Object &status){
+
+void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::JSON::Array& streams, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf) {
+	Poco::JSON::Object stream;
+	stream.set("id", pConf->getString("wirelessFalse.wireless.remotes.downlink.streams.id"));
+	stream.set("mcs", pConf->getString("wirelessFalse.wireless.remotes.downlink.streams.mcs"));
+	stream.set("weight", pConf->getString("wirelessFalse.wireless.remotes.downlink.streams.weight"));
+	streams.add(stream);
+}
+
+void WirelessFalse::getStatusWirelessFalse(Poco::JSON::Object &status, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object blank;
 
+//	pConf->getString("wirelessFalse.wireless.status")
 	Poco::JSON::Array rstreams;
-	this->getStatusRStreamsWirelessFalse(rstreams);
+	this->getStatusRStreamsWirelessFalse(rstreams, pConf);
 	status.set("rstreams", rstreams);
 
 	Poco::JSON::Array streams;
-	this->getStatusRStreamsWirelessFalse(streams);
+	this->getStatusRStreamsWirelessFalse(streams, pConf);
 	status.set("streams", streams);
 
 	status.set("throughput", blank);
 
 }
 
-void WirelessFalse::getStatusRStreamsWirelessFalse(Poco::JSON::Array &array){
+void WirelessFalse::getStatusRStreamsWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	Poco::JSON::Object object;
-	object.set("id", 0);
+	object.set("id", pConf->getString("wirelessFalse.wireless.status.rstreams.id"));
 
 	Poco::JSON::Object blank;
 
@@ -286,7 +285,7 @@ void WirelessFalse::getStatusRStreamsWirelessFalse(Poco::JSON::Array &array){
 	Poco::JSON::Object ber;
 	ber.set("codeword", blank);
 	obj.set("ber", blank);
-	obj.set("rid", 1);
+	obj.set("rid", pConf->getString("wirelessFalse.wireless.status.rstreams.remotes.rid"));
 	obj.set("snr", blank);
 
 	Poco::JSON::Object throughput;
