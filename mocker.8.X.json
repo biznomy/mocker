@@ -62,6 +62,8 @@
         "txSwap": "true"
       },
       "remotes": {
+        "remotes-start": 1,
+        "remotes-end": 2,
         "admin-state": "enable",
         "downlink": {
           "streams": {
@@ -135,44 +137,124 @@
           "remotes": {
             "ber": {
               "codeword": {
-                "correctable": 0,
-                "total": 0,
-                "uncorrectable": 0
+                "correctable": {
+                  "lower": "0.0f",
+                  "upper": "0.0f",
+                  "flactuation": "0.0f"
+                },
+                "total": {
+                  "lower": "0.0f",
+                  "upper": "0.0f",
+                  "flactuation": "0.0f"
+                },
+                "uncorrectable": {
+                  "lower": "0.0f",
+                  "upper": "0.0f",
+                  "flactuation": "0.0f"
+                }
               },
-              "last": 0,
-              "total": 0
+              "last": {
+                "lower": "0.0f",
+                "upper": "0.0f",
+                "flactuation": "0.0f"
+              },
+              "total": {
+                "lower": "0.0f",
+                "upper": "0.0f",
+                "flactuation": "0.0f"
+              }
             },
             "mcs": "QAM4",
             "resources": 0,
             "rid": 1,
             "snr": {
-              "average": "NOEXISTS",
-              "current": "NOEXISTS",
-              "maximum": "NOEXISTS",
-              "minimum": "NOEXISTS",
-              "variance": "NOEXISTS"
+              "average": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "current": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "maximum": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "minimum": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "variance": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              }
             },
             "throughput": {
               "errors": {
-                "frames": "NOEXISTS",
-                "rate": "NOEXISTS"
+                "frames": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                },
+                "rate": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                }
               },
               "rx": {
-                "capacity": "NOEXISTS",
-                "frames": "NOEXISTS",
-                "rate": "NOEXISTS"
+                "capacity": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                },
+                "frames": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                },
+                "rate": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                }
               },
               "tx": {
-                "capacity": 5197,
-                "frames": 9484278,
-                "rate": 0
+                "capacity": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                },
+                "frames": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                },
+                "rate": {
+                  "lower": "1000",
+                  "upper": "2000",
+                  "flactuation": "200"
+                }
               }
             }
           }
         },
         "throughput": {
-          "L1": 11194,
-          "L2": 172
+          "L1": {
+            "lower": "1000",
+            "upper": "2000",
+            "flactuation": "200"
+          },
+          "L2": {
+            "lower": "1000",
+            "upper": "2000",
+            "flactuation": "200"
+          }
         },
         "uptime": "24963"
       },
