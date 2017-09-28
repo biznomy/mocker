@@ -54,6 +54,14 @@ public:
 		TempData::instance()->getData(testObject);
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
+
+		/*try{
+			Poco::Util::JSONConfiguration bs(ss);
+			cout << bs.getString("wirelessTrue") << endl;
+		}catch(Poco::Exception &e){
+			cout << e.displayText() << endl;
+		}*/
+
 		ostr << ss.str() << endl;
 	}
 };
