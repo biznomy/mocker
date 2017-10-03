@@ -17,6 +17,8 @@
 #include "Poco/Path.h"
 #include <iostream>
 
+#include "Poco/JSON/Query.h"
+
 #include "TempData.h"
 #define SAMPLE_INTERVAL  (1000 * 1000)
 
@@ -55,10 +57,26 @@ public:
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
 
-		Poco::AutoPtr<Poco::Util::JSONConfiguration> js = new Poco::Util::JSONConfiguration(ss);
-		cout << "Remove Chest " << endl;
-		js->remove("wirelessTrue.wireless.chest");
-		cout << js->getString("wirelessTrue") << endl;
+		Poco::JSON::Parser parser;
+		Poco::Dynamic::Var result = parser.parse(ss.str());
+
+
+		Object::Ptr object = result.extract<Object::Ptr>();
+		cout << "isObject : "<< object->isObject("wirelessFalse") << endl;
+
+		Poco::DynamicStruct ds = *object;
+		cout << "isEmpty : "<< ds["wirelessTrue"].isEmpty() << endl;
+		cout << "isBoolean : "<< ds["wirelessTrue"].isBoolean() << endl;
+		cout << "isList : "<< ds["wirelessTrue"].isList() << endl;
+		cout << "isArray : "<< ds["wirelessTrue"].isArray() << endl;
+
+
+
+
+//		Poco::AutoPtr<Poco::Util::JSONConfiguration> js = new Poco::Util::JSONConfiguration(ss);
+//		cout << "Remove Chest " << endl;
+//		js->remove("wirelessTrue.wireless.chest");
+//		cout << js->getString("wirelessTrue") << endl;
 
 		ostr << ss.str() << endl;
 	}
