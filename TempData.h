@@ -187,7 +187,6 @@ void TempData::getData(Poco::JSON::Object &object){
 	this->getWirelessTrue(wirelessTrue);
 	object.set("wirelessTrue", wirelessTrue);
 
-
 }
 
 

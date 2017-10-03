@@ -20,6 +20,7 @@
 #include "Poco/JSON/Query.h"
 
 #include "TempData.h"
+#include "jsonparser.h"
 #define SAMPLE_INTERVAL  (1000 * 1000)
 
 using Poco::Net::ServerSocket;
@@ -42,6 +43,7 @@ using Poco::Util::HelpFormatter;
 using Poco::Path;
 Path p;
 
+
 class PageRequestHandler: public HTTPRequestHandler
 	/// Return a HTML document with some JavaScript creating
 	/// a WebSocket connection.
@@ -57,28 +59,12 @@ public:
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
 
-		Poco::JSON::Parser parser;
-		Poco::Dynamic::Var result = parser.parse(ss.str());
-
-
-		Object::Ptr object = result.extract<Object::Ptr>();
-		cout << "isObject : "<< object->isObject("wirelessFalse") << endl;
-
-		Poco::DynamicStruct ds = *object;
-		cout << "isEmpty : "<< ds["wirelessTrue"].isEmpty() << endl;
-		cout << "isBoolean : "<< ds["wirelessTrue"].isBoolean() << endl;
-		cout << "isList : "<< ds["wirelessTrue"].isList() << endl;
-		cout << "isArray : "<< ds["wirelessTrue"].isArray() << endl;
-
-
-
-
-//		Poco::AutoPtr<Poco::Util::JSONConfiguration> js = new Poco::Util::JSONConfiguration(ss);
-//		cout << "Remove Chest " << endl;
-//		js->remove("wirelessTrue.wireless.chest");
-//		cout << js->getString("wirelessTrue") << endl;
+		jsonparser jp;
+		jp.test(testObject);
 
 		ostr << ss.str() << endl;
+
+
 	}
 };
 
