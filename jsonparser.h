@@ -150,6 +150,7 @@ public:
 	jsonparser();
 	virtual ~jsonparser();
 	void test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJSON);
+	void repair(Poco::JSON::Object::Ptr& input, Poco::JSON::Object::Ptr output);
 };
 
 jsonparser::jsonparser(){
@@ -193,15 +194,35 @@ void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJ
 		}
 	}//end white-list
 
+
 //	cout <<  newJSONConf->getString("wirelessTrue") << endl;
 
 	if(Util::parseJSONObject(newJSONConf->getString("wirelessTrue"))){
 		Poco::JSON::Object::Ptr object(Util::jsonConvertor(newJSONConf->getString("wirelessTrue")));
+		Poco::JSON::Object::Ptr output;
+		repair(object, output);
 		outputJSON.set("wirelessTrue", object);
 	}
 
 }
 
+
+void jsonparser::repair(Poco::JSON::Object::Ptr& input, Poco::JSON::Object::Ptr output){
+	Poco::JSON::Object::Iterator it;
+	for(it = input->begin(); it != input->end(); it++){
+		std::cout<<it->first<<"\n";
+		std::string temp = it->second.toString();
+		if(Util::parseJSONObject(temp)){
+			Poco::JSON::Object::Ptr newOut;
+			Poco::JSON::Object::Ptr old(Util::jsonConvertor(temp));
+			this->repair(old, newOut);
+		}else if(Util::parseJSONArray(temp)){
+
+		}else{
+			return;
+		}
+	}
+}
 
 
 
