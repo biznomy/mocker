@@ -54,14 +54,16 @@ public:
 		response.setChunkedTransferEncoding(true);
 		response.setContentType("text/html");
 		std::ostream& ostr = response.send();
-		Poco::JSON::Object testObject;
-		TempData::instance()->getData(testObject);
-		std::stringstream ss;
-		testObject.stringify(ss, 2, 2);
+		Poco::JSON::Object inputObject, outputObject;
+		TempData::instance()->getData(inputObject);
+
 
 		jsonparser jp;
-		jp.test(testObject);
+		jp.test(inputObject, outputObject);
 
+
+		std::stringstream ss;
+		outputObject.stringify(ss, 2, 2);
 		ostr << ss.str() << endl;
 
 

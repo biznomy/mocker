@@ -23,7 +23,6 @@ using namespace std;
 
 Poco::AutoPtr<Poco::Util::JSONConfiguration> request = new Poco::Util::JSONConfiguration("/home/ubuntu/Desktop/whitelist.json");
 
-
 class Util{
 
 	static Poco::Dynamic::Var getDynamicVar(std::string string);
@@ -148,14 +147,9 @@ bool Util::isArray(std::string array, std::string key){
 
 class jsonparser{
 public:
-
 	jsonparser();
 	virtual ~jsonparser();
-	void test(Poco::JSON::Object &object);
-private :
-	std::string jsonString;
-
-
+	void test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJSON);
 };
 
 jsonparser::jsonparser(){
@@ -166,37 +160,44 @@ jsonparser::~jsonparser(){
 	//TODO
 }
 
-void jsonparser::test(Poco::JSON::Object &object){
+void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJSON){
 	std::stringstream newJSON, originalJSON;
-	object.stringify(newJSON, 2, 2);
-	object.stringify(originalJSON, 2, 2);
+	inputJSON.stringify(newJSON, 2, 2);
+	inputJSON.stringify(originalJSON, 2, 2);
 	Poco::AutoPtr<Poco::Util::JSONConfiguration> newJSONConf = new Poco::Util::JSONConfiguration(newJSON);
 	Poco::AutoPtr<Poco::Util::JSONConfiguration> originalJSONConf = new Poco::Util::JSONConfiguration(originalJSON);
-	if(request->hasProperty("keys[0].whitelist")){
+
+
+	if(request->hasProperty("keys[0].blacklist")){
 
 		std::string  blackListArray = request->getString("keys[0].blacklist");
-		cout << "console data :  "<<  blackListArray << endl;
+		cout << "black data :  "<<  blackListArray << endl;
 		if(Util::parseJSONArray(blackListArray)){
 			Poco::JSON::Array::Ptr tempArray =  Util::arrayConvertor(request->getString("keys[0].blacklist"));
 			for(unsigned int i = 0;i < tempArray->size(); i++){
-
 				newJSONConf->remove(tempArray->get(i).toString());
-				cout <<  newJSONConf->getString("wirelessTrue") << endl;
 			}
 		}
+	}//end black-list
 
+
+	if(request->hasProperty("keys[0].whitelist")){
 
 		std::string  whiteListArray = request->getString("keys[0].whitelist");
-		cout << "console data :  "<<  whiteListArray << endl;
+		cout << "white data :  "<<  whiteListArray << endl;
 		if(Util::parseJSONArray(whiteListArray)){
 			Poco::JSON::Array::Ptr tempArray =  Util::arrayConvertor(request->getString("keys[0].whitelist"));
 			for(unsigned int i = 0;i < tempArray->size(); i++){
-
 				newJSONConf->setString(tempArray->get(i).toString(), originalJSONConf->getString(tempArray->get(i).toString()));
-				cout <<  newJSONConf->getString("wirelessTrue") << endl;
-
 			}
 		}
+	}//end white-list
+
+//	cout <<  newJSONConf->getString("wirelessTrue") << endl;
+
+	if(Util::parseJSONObject(newJSONConf->getString("wirelessTrue"))){
+		Poco::JSON::Object::Ptr object(Util::jsonConvertor(newJSONConf->getString("wirelessTrue")));
+		outputJSON.set("wirelessTrue", object);
 	}
 
 }
