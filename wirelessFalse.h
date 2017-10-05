@@ -206,6 +206,13 @@ void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::Auto
 	object.set("beam-id", pConf->getString("wirelessFalse.wireless.radio.beam-id"));
 	object.set("frequency", pConf->getString("wirelessFalse.wireless.radio.frequency"));
 	object.set("link-distance", pConf->getString("wirelessFalse.wireless.radio.link-distance"));
+
+//	Poco::JSON::Object status;
+//	status.set("bandwidth", pConf->getString("wirelessFalse.wireless.radio.bandwidth"));//TODO CHANGE
+//	status.set("frequency", pConf->getString("wirelessFalse.wireless.radio.frequency"));//TODO CHANGE
+//	status.set("align-level", "");//TODO CHANGE
+//	status.set("tx-power", 0);//TODO CHANGE
+
 	object.set("status", blank);
 	object.set("sto", pConf->getString("wirelessFalse.wireless.radio.sto"));
 	object.set("target-rssi", pConf->getString("wirelessFalse.wireless.radio.target-rssi"));
@@ -238,6 +245,7 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 			status.set("throughput", blank);
 			status.set("mac-address", pConf->getString("wirelessFalse.wireless.remotes.status.mac-address"));
 			status.set("uptime", pConf->getString("wirelessFalse.wireless.remotes.status.uptime"));
+			status.set("state", "Connected");
 			remote.set("status", status);
 
 			Poco::JSON::Object uplink;
