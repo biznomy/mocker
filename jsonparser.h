@@ -110,7 +110,7 @@ public:
 };
 
 jsonparser::jsonparser(){
-	//TODO
+	//
 }
 
 jsonparser::~jsonparser(){
