@@ -27,8 +27,8 @@ class Util{
 
 	static Poco::Dynamic::Var getDynamicVar(std::string string);
 	static Poco::DynamicStruct getDynamicStruct(Poco::Dynamic::Var var);
-	static Poco::JSON::Object::Ptr getObjectPtr(Poco::Dynamic::Var var);
 public :
+	static Poco::JSON::Object::Ptr getObjectPtr(Poco::Dynamic::Var var);
 	static bool parseJSONObject(std::string stringVal);
 	static bool parseJSONArray(std::string stringVal);
 	static std::string stringConvertor(Poco::JSON::Object obj);
@@ -150,7 +150,7 @@ public:
 	jsonparser();
 	virtual ~jsonparser();
 	void test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJSON);
-	void repair(Poco::JSON::Object::Ptr& input, Poco::JSON::Object::Ptr output);
+	void recursuive(Poco::JSON::Object::Ptr& input, Poco::JSON::Object::Ptr output);
 };
 
 jsonparser::jsonparser(){
@@ -168,7 +168,6 @@ void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJ
 	Poco::AutoPtr<Poco::Util::JSONConfiguration> newJSONConf = new Poco::Util::JSONConfiguration(newJSON);
 	Poco::AutoPtr<Poco::Util::JSONConfiguration> originalJSONConf = new Poco::Util::JSONConfiguration(originalJSON);
 
-
 	if(request->hasProperty("keys[0].blacklist")){
 
 		std::string  blackListArray = request->getString("keys[0].blacklist");
@@ -180,7 +179,6 @@ void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJ
 			}
 		}
 	}//end black-list
-
 
 	if(request->hasProperty("keys[0].whitelist")){
 
@@ -199,33 +197,43 @@ void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJ
 
 	if(Util::parseJSONObject(newJSONConf->getString("wirelessTrue"))){
 		Poco::JSON::Object::Ptr object(Util::jsonConvertor(newJSONConf->getString("wirelessTrue")));
-		Poco::JSON::Object::Ptr output;
-		repair(object, output);
-		outputJSON.set("wirelessTrue", object);
+		Poco::JSON::Object::Ptr output = new Poco::JSON::Object;
+		recursuive(object, output);
+//		cout << Util::stringConvertor(*output) << endl;
+		outputJSON.set("wirelessTrue", output);
 	}
 
 }
 
-
-void jsonparser::repair(Poco::JSON::Object::Ptr& input, Poco::JSON::Object::Ptr output){
+void jsonparser::recursuive(Poco::JSON::Object::Ptr& input, Poco::JSON::Object::Ptr output){
 	Poco::JSON::Object::Iterator it;
 	for(it = input->begin(); it != input->end(); it++){
-		std::cout<<it->first<<"\n";
 		std::string temp = it->second.toString();
 		if(Util::parseJSONObject(temp)){
-			Poco::JSON::Object::Ptr newOut;
-			Poco::JSON::Object::Ptr old(Util::jsonConvertor(temp));
-			this->repair(old, newOut);
+			Poco::JSON::Object::Ptr newOut = new Poco::JSON::Object;
+			Poco::JSON::Object::Ptr oldOut(Util::jsonConvertor(temp));
+			this->recursuive(oldOut, newOut);
+			try{
+				output->set(it->first, newOut);
+			}catch(Poco::Exception &e){
+				cout << e.displayText()<< endl;
+			}
 		}else if(Util::parseJSONArray(temp)){
 
-		}else{
-			return;
+			Poco::JSON::Array::Ptr array = Util::arrayConvertor(temp);
+			for(unsigned int i = 0; i < array->size(); i++){
+				Poco::JSON::Object::Ptr newOut = new Poco::JSON::Object;
+				Poco::JSON::Object::Ptr fromArray = Util::getObjectPtr(array->get(i));
+				recursuive(fromArray, newOut);
+				array->set(i, newOut);
+			}
+			output->set(it->first, array);
+
+		} else {
+			output->set(it->first, temp);
 		}
 	}
 }
-
-
-
 
 
 #endif /* JSONPARSER_H_ */
