@@ -75,7 +75,9 @@
         "id": 1,
         "name": "NOEXISTS",
         "status": {
-          "throughput": {}
+          "throughput": {},
+          "uptime": 367,
+          "mac-address": "192::168::1::1"
         },
         "uplink": {
           "override": {
@@ -124,8 +126,53 @@
       },
       "interference-detection": {},
       "phy": {},
-      "radio": "",
-      "remotes": "",
+      "radio": {
+        "admin-mode": "disable",
+        "antenna": {
+          "antennaID": "0",
+          "rx-gain": "30.0",
+          "status": {},
+          "tx-attenuation": "15000.0"
+        },
+        "automatic-gain": "on",
+        "bandwidth": "10MHz",
+        "beam-id": "0",
+        "frequency": "3612.0",
+        "link-distance": "5000",
+        "status": {},
+        "sto": "on",
+        "target-rssi": "25",
+        "tx-power": "NOEXISTS",
+        "txSwap": "true"
+      },
+      "remotes": {
+        "remotes-start": 1,
+        "remotes-end": 2,
+        "admin-state": "enable",
+        "downlink": {
+          "streams": {
+            "id": "1",
+            "mcs": "QAM4",
+            "weight": "10"
+          }
+        },
+        "id": 1,
+        "name": "NOEXISTS",
+        "status": {
+          "throughput": {}
+        },
+        "uplink": {
+          "override": {
+            "power": "NOEXISTS",
+            "timing": "NOEXISTS"
+          },
+          "streams": {
+            "id": "1",
+            "mcs": "QAM4",
+            "weight": "10"
+          }
+        }
+      },
       "status": {
         "admin-state": "enable",
         "mode": "p2mp",
@@ -164,10 +211,66 @@
                 "flactuation": "0.0f"
               }
             },
+            "ber-dl": {
+              "codeword": {
+                "correctable": {
+                  "lower": "0.0f",
+                  "upper": "0.0f",
+                  "flactuation": "0.0f"
+                },
+                "total": {
+                  "lower": "0.0f",
+                  "upper": "0.0f",
+                  "flactuation": "0.0f"
+                },
+                "uncorrectable": {
+                  "lower": "0.0f",
+                  "upper": "0.0f",
+                  "flactuation": "0.0f"
+                }
+              },
+              "last": {
+                "lower": "0.0f",
+                "upper": "0.0f",
+                "flactuation": "0.0f"
+              },
+              "total": {
+                "lower": "0.0f",
+                "upper": "0.0f",
+                "flactuation": "0.0f"
+              }
+            },
             "mcs": "QAM4",
             "resources": 0,
             "rid": 1,
             "snr": {
+              "average": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "current": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "maximum": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "minimum": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              },
+              "variance": {
+                "lower": "22.0f",
+                "upper": "25.0f",
+                "flactuation": "2.0f"
+              }
+            },
+            "snr-dl": {
               "average": {
                 "lower": "22.0f",
                 "upper": "25.0f",
