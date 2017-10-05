@@ -1,0 +1,20 @@
+{
+  "keys": [
+    {
+      "path": "/wireless",
+      "operational": true,
+      "isStatic": false,
+      "prefix": "wirelessTrue",
+      "whitelist":[      	
+      	"wirelessTrue.wireless.status.rstreams[0].remotes[0].snr",
+      	"wirelessTrue.wireless.status.rstreams[1].remotes[0].snr"
+      ],
+      "blacklist":[
+      	"wirelessTrue.wireless.status.streams",
+      	"wirelessTrue.wireless.status.rstreams"
+      ]
+    }
+  ],
+  "auth": "YWRtaW46dGVjaG5vJDEyMw==",
+  "role": "admin"
+}

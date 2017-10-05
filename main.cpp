@@ -54,10 +54,9 @@ public:
 		response.setChunkedTransferEncoding(true);
 		response.setContentType("text/html");
 		std::ostream& ostr = response.send();
+
 		Poco::JSON::Object inputObject, outputObject;
 		TempData::instance()->getData(inputObject);
-
-
 		jsonparser jp;
 		jp.test(inputObject, outputObject);
 
@@ -87,10 +86,14 @@ public:
 			n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 			do{
 
-				Poco::JSON::Object testObject;
-				TempData::instance()->getData(testObject);
+				Poco::JSON::Object inputObject, outputObject;
+				TempData::instance()->getData(inputObject);
+				jsonparser jp;
+				jp.test(inputObject, outputObject);
+
+
 				std::stringstream ss;
-				testObject.stringify(ss, 2, 2);
+				outputObject.stringify(ss, 2, 2);
 				ws.sendFrame(ss.str().c_str(), ss.str().size(), flags);
 				usleep(SAMPLE_INTERVAL);
 

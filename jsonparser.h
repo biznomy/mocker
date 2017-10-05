@@ -149,13 +149,10 @@ void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJ
 	}//end white-list
 
 
-//	cout <<  newJSONConf->getString("wirelessTrue") << endl;
-
 	if(Util::parseJSONObject(newJSONConf->getString("wirelessTrue"))){
 		Poco::JSON::Object::Ptr object(Util::jsonConvertor(newJSONConf->getString("wirelessTrue")));
 		Poco::JSON::Object::Ptr output = new Poco::JSON::Object;
 		recursuive(object, output);
-//		cout << Util::stringConvertor(*output) << endl;
 		outputJSON.set("wirelessTrue", output);
 	}
 
