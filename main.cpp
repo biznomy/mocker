@@ -15,6 +15,7 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
 #include "Poco/Path.h"
+#include "Poco/HashMap.h"
 #include <iostream>
 
 #include "Poco/JSON/Query.h"
@@ -41,8 +42,8 @@ using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
 using Poco::Path;
-Path p;
 
+std::map<std::string, std::string> myMap;
 
 class PageRequestHandler: public HTTPRequestHandler
 	/// Return a HTML document with some JavaScript creating
@@ -84,6 +85,15 @@ public:
 			int flags;
 			int n;
 			n = ws.receiveFrame(buffer, sizeof(buffer), flags);
+			std::string str(buffer);
+			myMap["key"] = str;
+			std::map<std::string,std::string>::iterator it = myMap.find("key");
+
+			if(it != myMap.end()){
+				cout << it-> first << endl;
+				cout << it-> second << endl;
+			}
+
 			do{
 
 				Poco::JSON::Object inputObject, outputObject;

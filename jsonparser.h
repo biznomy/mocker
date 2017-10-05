@@ -127,7 +127,7 @@ void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJ
 	if(request->hasProperty("keys[0].blacklist")){
 
 		std::string  blackListArray = request->getString("keys[0].blacklist");
-		cout << "black data :  "<<  blackListArray << endl;
+//		cout << "black data :  "<<  blackListArray << endl;
 		if(Util::parseJSONArray(blackListArray)){
 			Poco::JSON::Array::Ptr tempArray =  Util::arrayConvertor(request->getString("keys[0].blacklist"));
 			for(unsigned int i = 0;i < tempArray->size(); i++){
@@ -139,7 +139,7 @@ void jsonparser::test(Poco::JSON::Object &inputJSON, Poco::JSON::Object &outputJ
 	if(request->hasProperty("keys[0].whitelist")){
 
 		std::string  whiteListArray = request->getString("keys[0].whitelist");
-		cout << "white data :  "<<  whiteListArray << endl;
+//		cout << "white data :  "<<  whiteListArray << endl;
 		if(Util::parseJSONArray(whiteListArray)){
 			Poco::JSON::Array::Ptr tempArray =  Util::arrayConvertor(request->getString("keys[0].whitelist"));
 			for(unsigned int i = 0;i < tempArray->size(); i++){
