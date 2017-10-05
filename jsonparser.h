@@ -36,16 +36,6 @@ public :
 	static Poco::JSON::Object::Ptr jsonConvertor(std::string stringVal);
 	static Poco::JSON::Array::Ptr arrayConvertor(std::string stringVal);
 
-	static bool isObject(Poco::JSON::Object::Ptr &object, std::string key);
-	static bool isEmpty(Poco::JSON::Object &object, std::string key);
-	static bool isEmpty(Poco::JSON::Array &array, std::string key);
-	static bool isArray(Poco::JSON::Array &array, std::string key);
-	static bool isArray(Poco::JSON::Array::Ptr &array, std::string key);
-
-	static bool isObject(std::string json, std::string key);
-	static bool isEmpty(std::string json, std::string key);
-	static bool isArray(std::string array, std::string key);
-
 };
 
 bool Util::parseJSONObject(std::string stringVal){
@@ -110,40 +100,6 @@ Poco::DynamicStruct Util::getDynamicStruct(Poco::Dynamic::Var var){
 Poco::JSON::Object::Ptr Util::getObjectPtr(Poco::Dynamic::Var var){
 	return var.extract<Object::Ptr>();
 }
-
-bool Util::isObject(Poco::JSON::Object::Ptr &object, std::string key){
-	return object->isObject(key);
-}
-
-bool Util::isEmpty(Poco::JSON::Object &object, std::string key){
-	return getDynamicStruct(getDynamicVar(stringConvertor(object)))[key].isEmpty();
-}
-
-bool Util::isEmpty(Poco::JSON::Array &array, std::string key){
-	return getDynamicStruct(getDynamicVar(stringConvertor(array)))[key].isEmpty();
-}
-
-bool Util::isArray(Poco::JSON::Array &array, std::string key){
-	return getDynamicStruct(getDynamicVar(stringConvertor(array)))[key].isArray();
-}
-
-bool Util::isArray(Poco::JSON::Array::Ptr &array, std::string key){
-	return array->isArray(key);
-}
-
-bool Util::isObject(std::string json, std::string key){
-	Poco::JSON::Object::Ptr ptr = getObjectPtr(getDynamicVar(json));
-	return ptr->isObject(key);
-}
-
-bool Util::isEmpty(std::string json, std::string key){
-	return getDynamicStruct(getDynamicVar(json))[key].isEmpty();
-}
-
-bool Util::isArray(std::string array, std::string key){
-	return getDynamicStruct(getDynamicVar(array))[key].isArray();
-}
-
 
 class jsonparser{
 public:
