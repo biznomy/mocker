@@ -55,10 +55,10 @@ public:
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
 
-		Poco::AutoPtr<Poco::Util::JSONConfiguration> js = new Poco::Util::JSONConfiguration(ss);
+		/*Poco::AutoPtr<Poco::Util::JSONConfiguration> js = new Poco::Util::JSONConfiguration(ss);
 		cout << "Remove Chest " << endl;
 		js->remove("wirelessTrue.wireless.chest");
-		cout << js->getString("wirelessTrue") << endl;
+		cout << js->getString("wirelessTrue") << endl;*/
 
 		ostr << ss.str() << endl;
 	}
