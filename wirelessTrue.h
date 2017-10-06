@@ -28,6 +28,7 @@ using Poco::Util::JSONConfiguration;
 
 
 long true_time_value;
+int k=0;
 class WirelessTrue{
 
 private :
@@ -58,6 +59,7 @@ public :
 WirelessTrue::~WirelessTrue() {
 	Poco::Timestamp thisnow;
 	true_time_value = thisnow.epochTime();
+	if(k < 60){k++;}else{k=0;}
 }
 
 /**
@@ -154,7 +156,8 @@ void WirelessTrue::getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<
 	status.set("rcv-gain-level", pConf->getString("wirelessTrue.wireless.hub.status.rcv-gain-level"));
 	status.set("schedule", pConf->getString("wirelessTrue.wireless.hub.status.schedule"));
 	status.set("ssid", pConf->getString("wirelessTrue.wireless.hub.status.ssid"));
-	status.set("state", pConf->getString("wirelessTrue.wireless.hub.status.state"));
+	status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.hub.status.state.[%d]", k)));
+
 	object.set("status", status);
 
 }

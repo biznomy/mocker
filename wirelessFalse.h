@@ -25,6 +25,7 @@ using Poco::Util::Application;
 #include "Poco/AutoPtr.h"
 
 long false_time_value;
+int j=0;
 class WirelessFalse{
 
 private :
@@ -59,6 +60,7 @@ public :
 WirelessFalse::~WirelessFalse() {
 	Poco::Timestamp thisnow;
 	false_time_value = thisnow.epochTime();
+	if(j<60){j++;}else{j=0;}
 //	cout << "close object WirelessFalse" << endl;
 }
 
@@ -210,12 +212,6 @@ void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::Auto
 	object.set("frequency", pConf->getString("wirelessFalse.wireless.radio.frequency"));
 	object.set("link-distance", pConf->getString("wirelessFalse.wireless.radio.link-distance"));
 
-//	Poco::JSON::Object status;
-//	status.set("bandwidth", pConf->getString("wirelessFalse.wireless.radio.bandwidth"));//TODO CHANGE
-//	status.set("frequency", pConf->getString("wirelessFalse.wireless.radio.frequency"));//TODO CHANGE
-//	status.set("align-level", "");//TODO CHANGE
-//	status.set("tx-power", 0);//TODO CHANGE
-
 	object.set("status", blank);
 	object.set("sto", pConf->getString("wirelessFalse.wireless.radio.sto"));
 	object.set("target-rssi", pConf->getString("wirelessFalse.wireless.radio.target-rssi"));
@@ -247,12 +243,15 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 			Poco::JSON::Object status;
 			status.set("throughput", blank);
 			status.set("mac-address", Poco::format(pConf->getString("wirelessFalse.wireless.remotes.status.mac-address"), i));
+			status.set("uptime", (false_time_value - static_time_value) + i);
 
-			//TODO up - time
-//			status.set("uptime", pConf->getString("wirelessFalse.wireless.remotes.status.uptime"));
-			status.set("uptime", (false_time_value - static_time_value) + (i*10));
+			//TODO fix the interval for each remote status.state
+			if(i+j < 60) {
+				status.set("state", pConf->getString(Poco::format("wirelessFalse.wireless.remotes.status.state.[%d]", j+i)));
+			}else{
+				status.set("state", pConf->getString(Poco::format("wirelessFalse.wireless.remotes.status.state.[%d]", j)));
+			}
 
-			status.set("state", "Connected");
 			remote.set("status", status);
 
 			Poco::JSON::Object uplink;
