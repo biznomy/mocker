@@ -250,7 +250,7 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 
 			//TODO up - time
 //			status.set("uptime", pConf->getString("wirelessFalse.wireless.remotes.status.uptime"));
-			status.set("uptime", (false_time_value - static_time_value) - (i*10));
+			status.set("uptime", (false_time_value - static_time_value) + (i*10));
 
 			status.set("state", "Connected");
 			remote.set("status", status);

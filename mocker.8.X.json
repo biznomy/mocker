@@ -77,7 +77,7 @@
         "status": {
           "throughput": {},
           "uptime": 367,
-          "mac-address": "00:0a:95:9d:68:%.2d"
+          "mac-address": "00:0a:95:9d:68:0%.2d"
         },
         "uplink": {
           "override": {
