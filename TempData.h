@@ -25,7 +25,6 @@ using Poco::Util::Application;
 #include "Poco/Util/JSONConfiguration.h"
 #include "Poco/AutoPtr.h"
 
-
 class TempData{
 
 private :

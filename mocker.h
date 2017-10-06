@@ -15,7 +15,11 @@
 #include <random>
 #include <cstdio>
 #include <stdlib.h>     /* strtof */
+#include "Poco/Timestamp.h"
 using namespace std;
+
+Poco::Timestamp now;
+long static_time_value = now.epochTime();
 
 
 /**

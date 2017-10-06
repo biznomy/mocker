@@ -27,6 +27,7 @@ using Poco::Util::Application;
 using Poco::Util::JSONConfiguration;
 
 
+long true_time_value;
 class WirelessTrue{
 
 private :
@@ -55,7 +56,8 @@ public :
 
 
 WirelessTrue::~WirelessTrue() {
-//	cout << "close object WirelessTrue" << endl;
+	Poco::Timestamp thisnow;
+	true_time_value = thisnow.epochTime();
 }
 
 /**
@@ -260,7 +262,8 @@ void WirelessTrue::getStatusWirelessTrue(Poco::JSON::Object &status, Poco::AutoP
 	generateLong(throughput, "L2", Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L2.lower")), Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L2.upper")), Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L2.flactuation")));
 	status.set("throughput", throughput);
 
-	status.set("uptime", pConf->getString("wirelessTrue.wireless.status.uptime"));
+	//TODO up - time
+	status.set("uptime", (true_time_value - static_time_value));
 
 
 }

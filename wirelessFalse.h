@@ -24,11 +24,12 @@ using Poco::Util::Application;
 #include "Poco/Util/JSONConfiguration.h"
 #include "Poco/AutoPtr.h"
 
-
+long false_time_value;
 class WirelessFalse{
 
 private :
 //NOTE Wireless False Start
+
 	void getChestWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getCpeWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getHubWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
@@ -56,6 +57,8 @@ public :
 
 
 WirelessFalse::~WirelessFalse() {
+	Poco::Timestamp thisnow;
+	false_time_value = thisnow.epochTime();
 //	cout << "close object WirelessFalse" << endl;
 }
 
@@ -244,7 +247,11 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 			Poco::JSON::Object status;
 			status.set("throughput", blank);
 			status.set("mac-address", Poco::format(pConf->getString("wirelessFalse.wireless.remotes.status.mac-address"), i));
-			status.set("uptime", pConf->getString("wirelessFalse.wireless.remotes.status.uptime"));
+
+			//TODO up - time
+//			status.set("uptime", pConf->getString("wirelessFalse.wireless.remotes.status.uptime"));
+			status.set("uptime", (false_time_value - static_time_value) - (i*10));
+
 			status.set("state", "Connected");
 			remote.set("status", status);
 
