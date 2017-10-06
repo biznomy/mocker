@@ -69,7 +69,7 @@
           "streams": {
             "id": "1",
             "mcs": "QAM4",
-            "weight": "10"
+            "weight": "100"
           }
         },
         "id": 1,
@@ -149,7 +149,7 @@
           "streams": {
             "id": "1",
             "mcs": "QAM4",
-            "weight": "10"
+            "weight": "100"
           }
         }
       },
@@ -281,7 +281,7 @@
           "streams": {
             "id": "1",
             "mcs": "QAM4",
-            "weight": "10"
+            "weight": "100"
           }
         },
         "id": 1,
@@ -297,7 +297,7 @@
           "streams": {
             "id": "1",
             "mcs": "QAM4",
-            "weight": "10"
+            "weight": "100"
           }
         }
       },
