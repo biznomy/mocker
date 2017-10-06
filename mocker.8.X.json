@@ -63,7 +63,7 @@
       },
       "remotes": {
         "remotes-start": 1,
-        "remotes-end": 2,
+        "remotes-end": 8,
         "admin-state": "enable",
         "downlink": {
           "streams": {
@@ -77,7 +77,7 @@
         "status": {
           "throughput": {},
           "uptime": 367,
-          "mac-address": "192::168::1::1"
+          "mac-address": "00:0a:95:9d:68:%.2d"
         },
         "uplink": {
           "override": {
@@ -139,7 +139,12 @@
         "beam-id": "0",
         "frequency": "3612.0",
         "link-distance": "5000",
-        "status": {},
+        "status": {
+          "align-level": "0",
+          "bandwidth": "10MHz",
+          "frequency": "3612.0",
+          "tx-power": "NOEXISTS"
+        },
         "sto": "on",
         "target-rssi": "25",
         "tx-power": "NOEXISTS",
@@ -147,7 +152,7 @@
       },
       "remotes": {
         "remotes-start": 1,
-        "remotes-end": 2,
+        "remotes-end": 8,
         "admin-state": "enable",
         "downlink": {
           "streams": {
@@ -179,7 +184,7 @@
         "role": "hub",
         "rstreams": {
           "streams-start": 1,
-          "streams-end": 2,
+          "streams-end": 8,
           "name": "NOEXISTS",
           "remotes": {
             "ber": {

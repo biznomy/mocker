@@ -179,10 +179,11 @@ void WirelessTrue::getRadioWirelessTrue(Poco::JSON::Object &object, Poco::AutoPt
 	object.set("link-distance", pConf->getString("wirelessTrue.wireless.radio.link-distance"));
 
 	Poco::JSON::Object status;
-	status.set("bandwidth", pConf->getString("wirelessFalse.wireless.radio.bandwidth"));//TODO CHANGE
-	status.set("frequency", pConf->getString("wirelessFalse.wireless.radio.frequency"));//TODO CHANGE
-	status.set("align-level", "");//TODO CHANGE
-	status.set("tx-power", 0);//TODO CHANGE
+//	cout << pConf->getString("wirelessTrue.wireless.radio.status") << endl;
+	status.set("bandwidth", pConf->getString("wirelessTrue.wireless.radio.status.bandwidth"));
+	status.set("frequency", pConf->getString("wirelessTrue.wireless.radio.status.frequency"));
+	status.set("align-level", pConf->getString("wirelessTrue.wireless.radio.status.align-level"));
+	status.set("tx-power", pConf->getString("wirelessTrue.wireless.radio.status.tx-power"));
 	object.set("status", status);
 
 	object.set("sto", pConf->getString("wirelessTrue.wireless.radio.sto"));

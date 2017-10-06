@@ -243,7 +243,7 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 
 			Poco::JSON::Object status;
 			status.set("throughput", blank);
-			status.set("mac-address", pConf->getString("wirelessFalse.wireless.remotes.status.mac-address"));
+			status.set("mac-address", Poco::format(pConf->getString("wirelessFalse.wireless.remotes.status.mac-address"), i));
 			status.set("uptime", pConf->getString("wirelessFalse.wireless.remotes.status.uptime"));
 			status.set("state", "Connected");
 			remote.set("status", status);
