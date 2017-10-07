@@ -217,9 +217,27 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 			remote.set("name", Poco::format("name-%d", i));
 
 			Poco::JSON::Object status;
-			status.set("throughput", blank);
-			status.set("state", "Connected");
+
+//			status.set("throughput", blank);
+
+			Poco::JSON::Object throughput;
+			generateLong(throughput, "L1", Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L1.lower")), Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L1.upper")), Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L1.flactuation")));
+			generateLong(throughput, "L2", Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L2.lower")), Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L2.upper")), Mocker::getLong(pConf->getString("wirelessTrue.wireless.status.throughput.L2.flactuation")));
+			status.set("throughput", throughput);
+
+			status.set("mac-address", Poco::format(pConf->getString("wirelessTrue.wireless.remotes.status.mac-address"), i));
+			status.set("uptime", (true_time_value - static_time_value) + i);
+
+			//TODO fix the interval for each remote status.state
+			if(i+k < 60) {
+				status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.remotes.status.state.[%d]", k+i)));
+			}else{
+				status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.remotes.status.state.[%d]", k)));
+			}
+
 			remote.set("status", status);
+
+
 
 			Poco::JSON::Object uplink;
 			Poco::JSON::Object override;
