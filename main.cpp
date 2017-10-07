@@ -7,6 +7,7 @@
 #include "Poco/Net/HTTPServerParams.h"
 #include "Poco/ThreadPool.h"
 #include "Poco/Net/ServerSocket.h"
+#include "Poco/Net/SocketAddress.h"
 #include "Poco/Net/WebSocket.h"
 #include "Poco/Net/NetException.h"
 #include "Poco/Util/ServerApplication.h"
@@ -59,7 +60,8 @@ public:
 		Poco::JSON::Object inputObject, outputObject;
 		TempData::instance()->getData(inputObject);
 		jsonparser jp;
-		jp.test(inputObject, outputObject);
+		std::string value("i m http");
+		jp.test(inputObject, outputObject, value);
 
 
 		std::stringstream ss;
@@ -84,22 +86,26 @@ public:
 			char buffer[1024];
 			int flags;
 			int n;
+
+			Poco::Net::SocketAddress ss = request.clientAddress();
+			int port = ss.port();
+			std::string ipAddress = ss.host().toString() + ":";
+			Poco::NumberFormatter::append(ipAddress, port);
+
+			memset(buffer, 0, sizeof(buffer));
 			n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 			std::string str(buffer);
-			myMap["key"] = str;
-			std::map<std::string,std::string>::iterator it = myMap.find("key");
-
+			myMap[ipAddress] = str;
+			std::map<std::string,std::string>::iterator it = myMap.find(ipAddress);
 			if(it != myMap.end()){
 				cout << it-> first << endl;
-				cout << it-> second << endl;
+//				cout << it-> second << endl;
 			}
-
 			do{
-
 				Poco::JSON::Object inputObject, outputObject;
 				TempData::instance()->getData(inputObject);
 				jsonparser jp;
-				jp.test(inputObject, outputObject);
+				jp.test(inputObject, outputObject, it->second);
 
 
 				std::stringstream ss;
