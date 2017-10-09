@@ -200,8 +200,8 @@ protected:
 
 
 			HTTPServerParams::Ptr params = new HTTPServerParams;
-			params->setMaxQueued(1);
-			params->setMaxThreads(1);
+			params->setMaxQueued(20);
+			params->setMaxThreads(20);
 
 			// set-up a HTTPServer instance
 			HTTPServer srv(new RequestHandlerFactory, svs, params);
