@@ -10,6 +10,15 @@
   "system-sw": {
     "running-sw-version": "8.4.6"
   },
+  "sysInfoFalse": {
+    "cpu-perc-active": "11.25",
+    "cpu-perc-idle": "88.75",
+    "dsk-free-size": 3365,
+    "dsk-total-size": 3844,
+    "mem-free-ram": 3172,
+    "mem-total-ram": 3877,
+    "sys-uptime": 27001
+  },
   "time": "1506401045000",
   "wirelessFalse": {
     "wireless": {

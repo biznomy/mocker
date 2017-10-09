@@ -10,6 +10,10 @@
 #include "mocker.h"
 #include "wirelessTrue.h"
 #include "wirelessFalse.h"
+
+#include "cpu.h"
+#include "system.h"
+
 #include "Poco/JSON/Parser.h"
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Array.h"
@@ -36,6 +40,7 @@ private :
 	void getWirelessFalse(Poco::JSON::Object &object);
 	void getSystem(Poco::JSON::Object &object);
 	void getIpv4(Poco::JSON::Object &object);
+	void getSystemInfo(Poco::JSON::Object &object);
 
 public :
 	Poco::DateTime date;
@@ -164,6 +169,12 @@ void TempData::getIpv4(Poco::JSON::Object &object){
 
 }
 
+void TempData::getSystemInfo(Poco::JSON::Object &object){
+	printRamInfo(object);
+	cpuStatus(object);
+	printSysDsk(object);
+}
+
 void TempData::getData(Poco::JSON::Object &object){
 	object.set("connection-pii", this->pConf->getString("connection-pii"));
 
@@ -177,6 +188,11 @@ void TempData::getData(Poco::JSON::Object &object){
 	object.set("ipv4", ipv4);
 
 	this->getSystem(object);
+
+
+	Poco::JSON::Object sysinfo;
+	this->getSystemInfo(sysinfo);
+	object.set("sysInfoFalse", sysinfo);
 
 	Poco::JSON::Object wirelessFalse;
 	this->getWirelessFalse(wirelessFalse);
