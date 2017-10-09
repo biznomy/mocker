@@ -242,7 +242,7 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 
 void WirelessTrue::getRemoteStreamsWirelessTrue(Poco::JSON::Array& streams, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max) {
 	Poco::JSON::Object stream;
-	int count = getRandom(1, 3);
+	int count = getRandom(1, 2);
 	int j=0;
 	for(;j<=count; ++j){
 		stream.set("id", Poco::format("%d", j));
