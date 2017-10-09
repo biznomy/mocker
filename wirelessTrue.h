@@ -198,9 +198,11 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 	for( ; i <= max ; i++ ){
 
 			Poco::JSON::Object downlink;
-			Poco::JSON::Array downlink_streams;
-			this->getRemoteStreamsWirelessTrue(downlink_streams, pConf, i, max);
-			downlink.set("streams", downlink_streams);
+
+			Poco::JSON::Array streams;
+			this->getRemoteStreamsWirelessTrue(streams, pConf, i, max);
+			downlink.set("streams", streams);
+
 			remote.set("downlink", downlink);
 
 			remote.set("id", Poco::format("%d", i));
@@ -229,10 +231,8 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 
 			Poco::JSON::Object uplink;
 			uplink.set("override", blank);
-
-			Poco::JSON::Array streams;
-			this->getRemoteStreamsWirelessTrue(streams, pConf, i, max);
 			uplink.set("streams", streams);
+
 
 			remote.set("uplink", uplink);
 
@@ -242,8 +242,13 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 
 void WirelessTrue::getRemoteStreamsWirelessTrue(Poco::JSON::Array& streams, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max) {
 	Poco::JSON::Object stream;
-	stream.set("id", Poco::format("%d", i));
-	streams.add(stream);
+	int count = getRandom(1, 3);
+	int j=0;
+	for(;j<=count; ++j){
+		stream.set("id", Poco::format("%d", j));
+		streams.add(stream);
+	}
+
 }
 
 
