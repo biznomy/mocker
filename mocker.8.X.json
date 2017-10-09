@@ -72,7 +72,7 @@
       },
       "remotes": {
         "remotes-start": 1,
-        "remotes-end": 8,
+        "remotes-end": 1,
         "admin-state": "enable",
         "downlink": {
           "streams": {
@@ -259,42 +259,29 @@
       "interference-detection": {},
       "phy": {},
       "radio": {
-        "admin-mode": "disable",
         "antenna": {
           "antennaID": "0",
-          "rx-gain": "30.0",
-          "status": {},
-          "tx-attenuation": "15000.0"
+          "status": {
+            "rx-gain": "30.0",
+            "rssi": "-46.0"
+          }
         },
-        "automatic-gain": "on",
-        "bandwidth": "10MHz",
-        "beam-id": "0",
-        "frequency": "3612.0",
-        "link-distance": "5000",
         "status": {
           "align-level": "0",
           "bandwidth": "10MHz",
           "frequency": "3612.0",
           "tx-power": "NOEXISTS"
-        },
-        "sto": "on",
-        "target-rssi": "25",
-        "tx-power": "NOEXISTS",
-        "txSwap": "true"
+        }
       },
       "remotes": {
         "remotes-start": 1,
-        "remotes-end": 8,
-        "admin-state": "enable",
+        "remotes-end": 1,
         "downlink": {
           "streams": {
-            "id": "1",
-            "mcs": "QAM4",
-            "weight": "100"
+            "id": "1"
           }
         },
         "id": 1,
-        "name": "NOEXISTS",
         "status": {
           "state": [
             "Unidirectional",
@@ -374,14 +361,9 @@
           "mac-address": "00:0a:95:9d:68:0%.2d"
         },
         "uplink": {
-          "override": {
-            "power": "NOEXISTS",
-            "timing": "NOEXISTS"
-          },
+          "override": {},
           "streams": {
-            "id": "1",
-            "mcs": "QAM4",
-            "weight": "100"
+            "id": "1"
           }
         }
       },
@@ -391,7 +373,8 @@
         "role": "hub",
         "rstreams": {
           "streams-start": 1,
-          "streams-end": 8,
+          "streams-end": 1,
+          "id": 1,
           "name": "NOEXISTS",
           "remotes": {
             "ber": {

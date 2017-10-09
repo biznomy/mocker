@@ -165,36 +165,28 @@ void WirelessTrue::getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<
 void WirelessTrue::getRadioWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object blank;
-	object.set("admin-mode", pConf->getString("wirelessTrue.wireless.radio.admin-mode"));
+//	object.set("admin-mode", pConf->getString("wirelessTrue.wireless.radio.admin-mode"));
 
 	Poco::JSON::Array antenna;
 	Poco::JSON::Object antennaObj;
 
 	antennaObj.set("antennaID", pConf->getString("wirelessTrue.wireless.radio.antenna.antennaID"));
-	antennaObj.set("rx-gain", pConf->getString("wirelessTrue.wireless.radio.antenna.rx-gain"));
-	antennaObj.set("status", blank);
-	antennaObj.set("tx-attenuation", pConf->getString("wirelessTrue.wireless.radio.antenna.tx-attenuation"));
+
+	Poco::JSON::Object antennaStatus;
+	antennaStatus.set("rssi", pConf->getString("wirelessTrue.wireless.radio.antenna.status.rssi"));
+	antennaStatus.set("rx-gain", pConf->getString("wirelessTrue.wireless.radio.antenna.status.rx-gain"));
+
+	antennaObj.set("status", antennaStatus);
+
 	antenna.add(antennaObj);
 	object.set("antenna", antenna);
 
-	object.set("automatic-gain", pConf->getString("wirelessTrue.wireless.radio.automatic-gain"));
-	object.set("bandwidth", pConf->getString("wirelessTrue.wireless.radio.bandwidth"));
-	object.set("beam-id", pConf->getString("wirelessTrue.wireless.radio.beam-id"));
-	object.set("frequency", pConf->getString("wirelessTrue.wireless.radio.frequency"));
-	object.set("link-distance", pConf->getString("wirelessTrue.wireless.radio.link-distance"));
-
 	Poco::JSON::Object status;
-//	cout << pConf->getString("wirelessTrue.wireless.radio.status") << endl;
+	status.set("align-level", pConf->getString("wirelessTrue.wireless.radio.status.align-level"));
 	status.set("bandwidth", pConf->getString("wirelessTrue.wireless.radio.status.bandwidth"));
 	status.set("frequency", pConf->getString("wirelessTrue.wireless.radio.status.frequency"));
-	status.set("align-level", pConf->getString("wirelessTrue.wireless.radio.status.align-level"));
 	status.set("tx-power", pConf->getString("wirelessTrue.wireless.radio.status.tx-power"));
 	object.set("status", status);
-
-	object.set("sto", pConf->getString("wirelessTrue.wireless.radio.sto"));
-	object.set("target-rssi", pConf->getString("wirelessTrue.wireless.radio.target-rssi"));
-	object.set("tx-power", pConf->getString("wirelessTrue.wireless.radio.tx-power"));
-	object.set("txSwap", pConf->getString("wirelessTrue.wireless.radio.txSwap"));
 }
 void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	Poco::JSON::Object blank;
@@ -204,8 +196,6 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 	int max = pConf->getInt("wirelessFalse.wireless.remotes.remotes-end");
 
 	for( ; i <= max ; i++ ){
-
-			remote.set("admin-state", pConf->getString("wirelessFalse.wireless.remotes.admin-state"));
 
 			Poco::JSON::Object downlink;
 			Poco::JSON::Array downlink_streams;
@@ -238,10 +228,7 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 
 
 			Poco::JSON::Object uplink;
-			Poco::JSON::Object override;
-			override.set("power", pConf->getString("wirelessFalse.wireless.remotes.uplink.override.power"));
-			override.set("timing", pConf->getString("wirelessFalse.wireless.remotes.uplink.override.timing"));
-			uplink.set("override", override);
+			uplink.set("override", blank);
 
 			Poco::JSON::Array streams;
 			this->getRemoteStreamsWirelessTrue(streams, pConf, i, max);
@@ -256,8 +243,6 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 void WirelessTrue::getRemoteStreamsWirelessTrue(Poco::JSON::Array& streams, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max) {
 	Poco::JSON::Object stream;
 	stream.set("id", Poco::format("%d", i));
-	stream.set("mcs", pConf->getString("wirelessFalse.wireless.remotes.downlink.streams.mcs"));
-	stream.set("weight", (pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max));
 	streams.add(stream);
 }
 
