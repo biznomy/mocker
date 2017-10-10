@@ -103,9 +103,9 @@
     "fluctuaton": "25000"
   },
   "throughput-tx-tput": {
-    "upper": "60000",
-    "lower": "10000",
-    "fluctuaton": "25000"
+    "upper": "500000",
+    "lower": "100000",
+    "fluctuaton": "250000"
   },
   "throughput-rx-dput": {
     "upper": "9000",
@@ -113,9 +113,9 @@
     "fluctuaton": "200"
   },
   "throughput-rx-tput": {
-    "upper": "11000",
-    "lower": "10000",
-    "fluctuaton": "200"
+    "upper": "110000",
+    "lower": "100000",
+    "fluctuaton": "2000"
   },
   "throughput-rx-frames": {
     "upper": "5200000",
