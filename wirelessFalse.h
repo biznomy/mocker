@@ -25,7 +25,6 @@ using Poco::Util::Application;
 #include "Poco/AutoPtr.h"
 
 long false_time_value;
-int j=0;
 class WirelessFalse{
 
 private :
@@ -60,8 +59,6 @@ public :
 WirelessFalse::~WirelessFalse() {
 	Poco::Timestamp thisnow;
 	false_time_value = thisnow.epochTime();
-	if(j<60){j++;}else{j=0;}
-//	cout << "close object WirelessFalse" << endl;
 }
 
 /**
