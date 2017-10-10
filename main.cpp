@@ -57,15 +57,10 @@ public:
 		response.setContentType("text/html");
 		std::ostream& ostr = response.send();
 
-		Poco::JSON::Object inputObject, outputObject;
+		Poco::JSON::Object inputObject;
 		TempData::instance()->getData(inputObject);
-		jsonparser jp;
-		std::string value("i m http");
-		jp.test(inputObject, outputObject, value);
-
-
 		std::stringstream ss;
-		outputObject.stringify(ss, 2, 2);
+		inputObject.stringify(ss, 2, 2);
 		ostr << ss.str() << endl;
 
 
