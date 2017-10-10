@@ -242,16 +242,6 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 
 			Poco::JSON::Object status;
 			status.set("throughput", blank);
-			status.set("mac-address", Poco::format(pConf->getString("wirelessFalse.wireless.remotes.status.mac-address"), i));
-			status.set("uptime", (false_time_value - static_time_value) + i);
-
-			//TODO fix the interval for each remote status.state
-			if(i+j < 60) {
-				status.set("state", pConf->getString(Poco::format("wirelessFalse.wireless.remotes.status.state.[%d]", j+i)));
-			}else{
-				status.set("state", pConf->getString(Poco::format("wirelessFalse.wireless.remotes.status.state.[%d]", j)));
-			}
-
 			remote.set("status", status);
 
 			Poco::JSON::Object uplink;
@@ -282,8 +272,6 @@ void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::JSON::Array& streams, Po
 void WirelessFalse::getStatusWirelessFalse(Poco::JSON::Object &status, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object blank;
-
-//	pConf->getString("wirelessFalse.wireless.status")
 	Poco::JSON::Array rstreams;
 	this->getStatusRStreamsWirelessFalse(rstreams, pConf);
 	status.set("rstreams", rstreams);
