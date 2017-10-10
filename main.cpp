@@ -54,7 +54,7 @@ public:
 		TempData::instance()->generateStream(testObject, 2);
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
-		ostr << "test : "<< ss.str() << endl;
+		ostr << ss.str() << endl;
 	}
 };
 
@@ -198,8 +198,8 @@ protected:
 
 
 			HTTPServerParams::Ptr params = new HTTPServerParams;
-			params->setMaxQueued(1);
-			params->setMaxThreads(1);
+			params->setMaxQueued(20);
+			params->setMaxThreads(20);
 
 			// set-up a HTTPServer instance
 			HTTPServer srv(new RequestHandlerFactory, svs, params);
