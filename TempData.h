@@ -45,6 +45,8 @@ using Poco::Util::Application;
 #define BEAM_ID 19
 #define CPE_1_STATE 20
 #define CPE_2_STATE 21
+#define THR_MAX_CAPI 22
+#define THR_BEAM_CAP 23
 
 class TempData{
 
@@ -316,6 +318,12 @@ void TempData::generateStaticData(Poco::JSON::Object& object, int choice) {
 		case CPE_2_STATE:
 			object.set("cpe-2-state", this->pConf->getString("cpe-2-state"));
 			break;
+		case THR_MAX_CAPI:
+			object.set("throughput-max-capacity", this->pConf->getString("throughput-max-capacity"));
+			break;
+		case THR_BEAM_CAP:
+			object.set("throughput-beam-capacity", this->pConf->getString("throughput-beam-capacity"));
+			break;
 		default:
 			break;
 	}
@@ -368,9 +376,8 @@ void TempData::generateStream(Poco::JSON::Object &object, int maxStream){
 	generateStaticData(object, WIRELESS_MODE);
 	generateStaticData(object, WIRELESS_RADIO_STATUS_TX_POWER);
 	generateStaticData(object, WIRELESS_RADIO_TX_POWER);
-
-
-
+	generateStaticData(object, THR_MAX_CAPI);
+	generateStaticData(object, THR_BEAM_CAP);
 
 }
 
