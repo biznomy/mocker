@@ -8,7 +8,7 @@
     "board-version": "2B"
   },
   "system-sw": {
-    "running-sw-version": "8.4.6"
+    "running-sw-version": "9.0.1"
   },
   "sysInfoFalse": {
     "cpu-perc-active": "11.25",
@@ -20,6 +20,8 @@
     "sys-uptime": 27001
   },
   "time": "1506401045000",
+  "throughput-beam-capacity": "128",
+  "throughput-max-capacity": "512",
   "wirelessFalse": {
     "wireless": {
       "admin-state": "enable",
@@ -60,7 +62,7 @@
           "tx-attenuation": "15000.0"
         },
         "automatic-gain": "on",
-        "bandwidth": "10MHz",
+        "bandwidth": "2x20MHz",
         "beam-id": "1",
         "frequency": "3612.0",
         "link-distance": "5000",
@@ -83,7 +85,7 @@
         },
         "id": 1,
         "name": "NOEXISTS",
-        "status": {          
+        "status": {
           "throughput": {}
         },
         "uplink": {
@@ -204,7 +206,7 @@
         },
         "status": {
           "align-level": "0",
-          "bandwidth": "10MHz",
+          "bandwidth": "2x20MHz",
           "frequency": "3612.0",
           "tx-power": "NOEXISTS"
         }
@@ -443,36 +445,36 @@
               },
               "rx": {
                 "capacity": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "12000",
+                  "upper": "126000",
+                  "flactuation": "2000"
                 },
                 "frames": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "120000",
+                  "upper": "126000",
+                  "flactuation": "2000"
                 },
                 "rate": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "194000",
+                  "upper": "197000",
+                  "flactuation": "2000"
                 }
               },
               "tx": {
                 "capacity": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "12000",
+                  "upper": "126000",
+                  "flactuation": "2000"
                 },
                 "frames": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "120000",
+                  "upper": "126000",
+                  "flactuation": "2000"
                 },
                 "rate": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "194000",
+                  "upper": "197000",
+                  "flactuation": "2000"
                 }
               }
             }

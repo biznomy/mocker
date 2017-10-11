@@ -177,6 +177,8 @@ void TempData::getSystemInfo(Poco::JSON::Object &object){
 
 void TempData::getData(Poco::JSON::Object &object){
 	object.set("connection-pii", this->pConf->getString("connection-pii"));
+	object.set("throughput-beam-capacity", this->pConf->getString("throughput-beam-capacity"));
+	object.set("throughput-max-capacity", this->pConf->getString("throughput-max-capacity"));
 
 	Poco::Timestamp now;
 	long time_value = now.epochTime() * 1000;
