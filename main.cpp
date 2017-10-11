@@ -44,8 +44,7 @@ using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
 using Poco::Path;
 
-std::map<std::string, std::string> mapResult;
-void getCurrentData();
+std::vector<std::string> mapData;
 class PageRequestHandler: public HTTPRequestHandler
 	/// Return a HTML document with some JavaScript creating
 	/// a WebSocket connection.
@@ -90,15 +89,9 @@ public:
 			memset(buffer, 0, sizeof(buffer));
 			n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 			std::string str(buffer);
-			cout << "Input : " << str << endl;
 			do{
-				Poco::JSON::Object outputObject;
-				Poco::Timestamp newnow;
-				long my_time_value = newnow.epochTime();
-
-				std::map<std::string,std::string>::iterator it2 = mapResult.find(Poco::format("%ld", (my_time_value - 3)));
-				if(it2 != mapResult.end()){
-					std::string value = it2->second;
+				if(mapData.size() > 3){
+					std::string value = mapData.at(3);
 					ws.sendFrame(value.c_str(), value.size(), flags);
 				}
 				usleep(SAMPLE_INTERVAL);
@@ -133,6 +126,7 @@ public:
 class MyThread: public Poco::Runnable {
 
 	void run() {
+		cout << "new thread started " << endl;
 
 		try {
 			do {
@@ -145,16 +139,11 @@ class MyThread: public Poco::Runnable {
 				std::stringstream ss;
 				inputObject.stringify(ss, 2, 2);
 
-				mapResult[key] = ss.str();
+				mapData.push_back(ss.str());
 				usleep(SAMPLE_INTERVAL);
-
-				cout << mapResult.size() << endl;
-				key = Poco::format("%ld", time_value - 10);
-				std::map<std::string, std::string>::iterator it = mapResult.find(key);
-				if(it != mapResult.end()){
-					mapResult.erase(it);
+				if(mapData.size() >= 10){
+					mapData.erase(mapData.begin());
 				}
-				cout << mapResult.size() << endl;
 
 			} while (1);
 		} catch (Poco::Exception &e) {
