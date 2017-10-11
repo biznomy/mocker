@@ -44,8 +44,8 @@ using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
 using Poco::Path;
 
-std::map<std::string, std::string> myMap;
-
+std::map<std::string, std::string> mapResult;
+void getCurrentData();
 class PageRequestHandler: public HTTPRequestHandler
 	/// Return a HTML document with some JavaScript creating
 	/// a WebSocket connection.
@@ -68,10 +68,10 @@ public:
 };
 
 
-class WebSocketRequestHandler: public HTTPRequestHandler
-	/// Handle a WebSocket connection.
-{
+class WebSocketRequestHandler: public HTTPRequestHandler{
+
 public:
+
 	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response){
 		Application& app = Application::instance();
 		try
@@ -90,18 +90,17 @@ public:
 			memset(buffer, 0, sizeof(buffer));
 			n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 			std::string str(buffer);
-			myMap[ipAddress] = str;
-			std::map<std::string,std::string>::iterator it = myMap.find(ipAddress);
-			if(it != myMap.end()){
-				cout << it-> first << endl;
-//				cout << it-> second << endl;
-			}
+			cout << "Input : " << str << endl;
 			do{
-				Poco::JSON::Object inputObject, outputObject;
-				TempData::instance()->getData(inputObject);
-				jsonparser jp;
-				jp.test(inputObject, outputObject, it->second);
+				Poco::JSON::Object outputObject;
+				Poco::Timestamp newnow;
+				long my_time_value = newnow.epochTime();
 
+				std::map<std::string,std::string>::iterator it2 = mapResult.find(Poco::format("%ld", (my_time_value - 3)));
+				if(it2 != mapResult.end()){
+					std::string value = it2->second;
+					outputObject.set("result", value);
+				}
 
 				std::stringstream ss;
 				outputObject.stringify(ss, 2, 2);
@@ -129,8 +128,41 @@ public:
 			}
 		}
 	}
+
+
+
 };
 
+
+class MyThread: public Poco::Runnable {
+
+	void run() {
+
+		try {
+			do {
+				Poco::Timestamp now;
+				long time_value = now.epochTime();
+				std::string key = Poco::format("%ld", time_value);
+				cout << key << endl; //TODO for test
+				mapResult[key] = key;
+				usleep(SAMPLE_INTERVAL);
+
+				cout << mapResult.size() << endl;
+				key = Poco::format("%ld", time_value - 10);
+				std::map<std::string, std::string>::iterator it = mapResult.find(key);
+				if(it != mapResult.end()){
+					mapResult.erase(it);
+				}
+				cout << mapResult.size() << endl;
+
+			} while (1);
+		} catch (Poco::Exception &e) {
+			cout << e.displayText() << endl;
+		}
+
+	}
+
+};
 
 class RequestHandlerFactory: public HTTPRequestHandlerFactory{
 public:
@@ -144,9 +176,12 @@ public:
 
 
 class WebSocketServer: public Poco::Util::ServerApplication{
+	Poco::Thread t1;
+	MyThread mythread;
 public:
 	WebSocketServer(): _helpRequested(false)
 	{
+		t1.start(mythread);
 	}
 
 	~WebSocketServer()
@@ -208,8 +243,8 @@ protected:
 
 
 			HTTPServerParams::Ptr params = new HTTPServerParams;
-			params->setMaxQueued(1);
-			params->setMaxThreads(1);
+			params->setMaxQueued(10);
+			params->setMaxThreads(10);
 
 			// set-up a HTTPServer instance
 			HTTPServer srv(new RequestHandlerFactory, svs, params);
