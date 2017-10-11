@@ -99,12 +99,8 @@ public:
 				std::map<std::string,std::string>::iterator it2 = mapResult.find(Poco::format("%ld", (my_time_value - 3)));
 				if(it2 != mapResult.end()){
 					std::string value = it2->second;
-					outputObject.set("result", value);
+					ws.sendFrame(value.c_str(), value.size(), flags);
 				}
-
-				std::stringstream ss;
-				outputObject.stringify(ss, 2, 2);
-				ws.sendFrame(ss.str().c_str(), ss.str().size(), flags);
 				usleep(SAMPLE_INTERVAL);
 
 			}while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
@@ -143,8 +139,13 @@ class MyThread: public Poco::Runnable {
 				Poco::Timestamp now;
 				long time_value = now.epochTime();
 				std::string key = Poco::format("%ld", time_value);
-				cout << key << endl; //TODO for test
-				mapResult[key] = key;
+
+				Poco::JSON::Object inputObject;
+				TempData::instance()->getData(inputObject);
+				std::stringstream ss;
+				inputObject.stringify(ss, 2, 2);
+
+				mapResult[key] = ss.str();
 				usleep(SAMPLE_INTERVAL);
 
 				cout << mapResult.size() << endl;
