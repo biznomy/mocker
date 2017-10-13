@@ -86,7 +86,7 @@ void WirelessTrue::generateBer(Poco::JSON::Object& object, std::string key, int 
  * return void
  **/
 void WirelessTrue::generateInteger(Poco::JSON::Object &object, std::string key, int lower, int upper, int fluctuation){
-	object.set(key, Mocker::getRandomMeanInteger(lower, upper, fluctuation));
+	object.set(key, Poco::format("%d", Mocker::getRandomMeanInteger(lower, upper, fluctuation)));
 }
 /**
  * param [&object : Poco::JSON::Object address]
@@ -97,7 +97,7 @@ void WirelessTrue::generateInteger(Poco::JSON::Object &object, std::string key, 
  * return void
  **/
 void WirelessTrue::generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation){
-	object.set(key, Mocker::getRandomMeanFloat(lower, upper, fluctuation));
+	object.set(key, Poco::NumberFormatter::format(Mocker::getRandomMeanFloat(lower, upper, fluctuation)));
 }
 /**
  * param [&object : Poco::JSON::Object address]
@@ -108,7 +108,7 @@ void WirelessTrue::generateFloat(Poco::JSON::Object &object, std::string key, fl
  * return void
  **/
 void WirelessTrue::generateLong(Poco::JSON::Object &object, std::string key, long lower, long upper, long fluctuation){
-	object.set(key, Mocker::getRandomMeanLong(lower, upper, fluctuation));
+	object.set(key, Poco::format("%ld", Mocker::getRandomMeanLong(lower, upper, fluctuation)));
 }
 /**
  * param [&object : Poco::JSON::Object address]
@@ -119,7 +119,7 @@ void WirelessTrue::generateLong(Poco::JSON::Object &object, std::string key, lon
  * return void
  **/
 void WirelessTrue::generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation){
-	object.set(key, Mocker::getRandomMeanDouble(lower, upper, fluctuation));
+	object.set(key, Poco::format("%ld", Mocker::getRandomMeanDouble(lower, upper, fluctuation)));
 }
 
 void WirelessTrue::getWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
@@ -216,7 +216,7 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 			status.set("throughput", throughput);
 
 			status.set("mac-address", Poco::format(pConf->getString("wirelessTrue.wireless.remotes.status.mac-address"), i));
-			status.set("uptime", (true_time_value - static_time_value) + i);
+			status.set("uptime", Poco::format("%ld", (true_time_value - static_time_value) + i));
 
 			//TODO fix the interval for each remote status.state
 			if(i+k < 60) {
@@ -272,7 +272,7 @@ void WirelessTrue::getStatusWirelessTrue(Poco::JSON::Object &status, Poco::AutoP
 	status.set("throughput", throughput);
 
 	//TODO up - time
-	status.set("uptime", (true_time_value - static_time_value));
+	status.set("uptime", Poco::format("%ld", (true_time_value - static_time_value)));
 
 
 }
@@ -285,7 +285,6 @@ void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco:
 			{1,4,6,8,0,0,0,0,0,0},
 			{1,6,8,0,0,0,0,0,0,0}
 	};
-
 
 	int x = 0;
 	int z = 0;
@@ -301,7 +300,16 @@ void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco:
 
 			Poco::JSON::Object ber;
 			Poco::JSON::Object codeword;
+
+
+
 			generateFloat(codeword, "correctable", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.correctable.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.correctable.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.correctable.flactuation")));
+
+
+
+
+
+
 			generateFloat(codeword, "uncorrectable", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.uncorrectable.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.uncorrectable.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.uncorrectable.flactuation")));
 			generateFloat(codeword, "total", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.total.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.total.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.total.flactuation")));
 			ber.set("codeword", codeword);
@@ -325,7 +333,7 @@ void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco:
 			obj.set("resources", pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.resources"));
 
 //			obj.set("rid", pConf->getInt("wirelessTrue.wireless.status.rstreams.remotes.rid") + i);
-			obj.set("rid", c[x][z]);
+			obj.set("rid", Poco::format("%d", c[x][z]));
 
 
 			Poco::JSON::Object snr;

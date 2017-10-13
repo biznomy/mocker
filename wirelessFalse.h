@@ -262,7 +262,7 @@ void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::JSON::Array& streams, Po
 	Poco::JSON::Object stream;
 	stream.set("id", Poco::format("%d", i));
 	stream.set("mcs", pConf->getString("wirelessFalse.wireless.remotes.downlink.streams.mcs"));
-	stream.set("weight", (pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max));
+	stream.set("weight", Poco::format("%d", (pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max)));
 	streams.add(stream);
 }
 
