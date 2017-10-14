@@ -1,8 +1,8 @@
 {
-  "bandwidth": "20x20MHz",
-  "bandwidth-status": "20x20MHz(20.0)",
+  "bandwidth": "2x20MHz",
+  "bandwidth-status": "2x20MHz(40.0)",
   "beam-id": "3",
-  "connection-ip": "192.168.1.120",
+  "connection-ip": "192.168.1.121",
   "connection-pii": "locked",
   "connection-role": "hub",
   "connection-ssid": "CohereSSID",
