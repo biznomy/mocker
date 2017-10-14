@@ -339,7 +339,7 @@ void TempData::generateStream(Poco::JSON::Object &object, int maxStream){
 	for(;i < maxStream; i++){
 
 		Poco::JSON::Object stream;
-		stream.set("id", i);
+		stream.set("id", Poco::format("%d", i));
 		streamCount.add(stream);
 
 		generateBer(object, Poco::format("ber-curr-%d", i), TempData::s_instance->pConf->getInt("ber-curr.decimal"), TempData::s_instance->pConf->getInt("ber-curr.lower"), TempData::s_instance->pConf->getInt("ber-curr.upper"), TempData::s_instance->pConf->getInt("ber-curr.fluctuaton"));
@@ -383,6 +383,11 @@ void TempData::generateStream(Poco::JSON::Object &object, int maxStream){
 	generateStaticData(object, WIRELESS_MODE);
 	generateStaticData(object, WIRELESS_RADIO_STATUS_TX_POWER);
 	generateStaticData(object, WIRELESS_RADIO_TX_POWER);
+	generateStaticData(object, CPE_O_1);
+	generateStaticData(object, CPE_1_2);
+	generateStaticData(object, CPE_1_STATE);
+	generateStaticData(object, CPE_2_STATE);
+	generateStaticData(object, BEAM_ID);
 	generateStaticData(object, THR_MAX_CAPI);
 	generateStaticData(object, THR_BEAM_CAP);
 
