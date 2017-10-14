@@ -333,7 +333,14 @@ void TempData::generateStaticData(Poco::JSON::Object& object, int choice) {
 
 void TempData::generateStream(Poco::JSON::Object &object, int maxStream){
 	int i = 0;
+
+	Poco::JSON::Array streamCount;
+
 	for(;i < maxStream; i++){
+
+		Poco::JSON::Object stream;
+		stream.set("id", i);
+		streamCount.add(stream);
 
 		generateBer(object, Poco::format("ber-curr-%d", i), TempData::s_instance->pConf->getInt("ber-curr.decimal"), TempData::s_instance->pConf->getInt("ber-curr.lower"), TempData::s_instance->pConf->getInt("ber-curr.upper"), TempData::s_instance->pConf->getInt("ber-curr.fluctuaton"));
 		generateBer(object, Poco::format("ber-cum-%d", i), TempData::s_instance->pConf->getInt("ber-cum.decimal"), TempData::s_instance->pConf->getInt("ber-cum.lower"), TempData::s_instance->pConf->getInt("ber-cum.upper"), TempData::s_instance->pConf->getInt("ber-cum.fluctuaton"));
@@ -357,7 +364,7 @@ void TempData::generateStream(Poco::JSON::Object &object, int maxStream){
 		generateInteger(object, Poco::format("connection-mcs-%d", i), TempData::s_instance->pConf->getInt("connection-mcs.lower"), TempData::s_instance->pConf->getInt("connection-mcs.upper"), TempData::s_instance->pConf->getInt("connection-mcs.fluctuaton"));
 		generateFloat(object, Poco::format("tx-attenuation-%d", i), Mocker::getFloat(TempData::s_instance->pConf->getString("tx-attenuation.lower")), Mocker::getFloat(TempData::s_instance->pConf->getString("tx-attenuation.upper")), Mocker::getFloat(TempData::s_instance->pConf->getString("tx-attenuation.fluctuaton")));
 	}
-
+	object.set("streams-count", streamCount);
 
 	generateStaticData(object, BANDWIDTH);
 	generateStaticData(object, BANDWIDTH_STATUS);
