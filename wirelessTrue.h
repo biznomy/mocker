@@ -28,7 +28,6 @@ using Poco::Util::JSONConfiguration;
 
 
 long true_time_value;
-int k=0;
 class WirelessTrue{
 
 private :
@@ -59,7 +58,6 @@ public :
 WirelessTrue::~WirelessTrue() {
 	Poco::Timestamp thisnow;
 	true_time_value = thisnow.epochTime();
-	if(k < 60){k++;}else{k=0;}
 }
 
 /**
@@ -156,7 +154,7 @@ void WirelessTrue::getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<
 	status.set("rcv-gain-level", pConf->getString("wirelessTrue.wireless.hub.status.rcv-gain-level"));
 	status.set("schedule", pConf->getString("wirelessTrue.wireless.hub.status.schedule"));
 	status.set("ssid", pConf->getString("wirelessTrue.wireless.hub.status.ssid"));
-	status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.hub.status.state.[%d]", k)));
+	status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.hub.status.state.[%d]", getRandom(1, 10))));
 
 	object.set("status", status);
 
@@ -206,7 +204,7 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 			remote.set("downlink", downlink);
 
 			remote.set("id", Poco::format("%d", i));
-			remote.set("name", Poco::format("name-%d", i));
+			remote.set("name", Poco::format("SJC-%0003d", i));
 
 			Poco::JSON::Object status;
 
@@ -216,18 +214,9 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 			status.set("throughput", throughput);
 
 			status.set("mac-address", Poco::format(pConf->getString("wirelessTrue.wireless.remotes.status.mac-address"), i));
-			status.set("uptime", Poco::format("%ld", (true_time_value - static_time_value) + i));
-
-			//TODO fix the interval for each remote status.state
-			if(i+k < 60) {
-				status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.remotes.status.state.[%d]", k+i)));
-			}else{
-				status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.remotes.status.state.[%d]", k)));
-			}
-
+			status.set("uptime", Poco::format("%ld", (true_time_value - static_time_value) + (i * 10)));
+			status.set("state", pConf->getString(Poco::format("wirelessTrue.wireless.remotes.status.state.[%d]", getRandom(1, 10))));
 			remote.set("status", status);
-
-
 
 			Poco::JSON::Object uplink;
 			uplink.set("override", blank);
@@ -242,7 +231,8 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 
 void WirelessTrue::getRemoteStreamsWirelessTrue(Poco::JSON::Array& streams, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max) {
 	Poco::JSON::Object stream;
-	int count = getRandom(1, 2);
+//	int count = getRandom(1, 2);
+	int count = 3;
 	int j=0;
 	for(;j<=count; ++j){
 		stream.set("id", Poco::format("%d", j));
@@ -373,8 +363,8 @@ void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco:
 		z=0;
 
 		Poco::JSON::Object object;
-		object.set("id", Poco::format("%d", x+1));
-		object.set("name", Poco::format("name-%d", x+1));
+		object.set("id", Poco::format("%d", x));
+		object.set("name", Poco::format("SJC-%0003d", x+1));
 		object.set("remotes", remotes);
 
 		array.add(object);

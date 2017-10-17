@@ -96,7 +96,7 @@
           },
           "streams": {
             "id": "1",
-            "mcs": "QAM4",
+            "mcs": ["QAM4", "QAM8", "QAM16", "QAM64"],
             "weight": "100"
           }
         }
@@ -225,12 +225,6 @@
           "state": [
             "Unidirectional",
             "Unidirectional",
-            "Unidirectional",
-            "Unidirectional",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
             "Wait-peak",
             "Wait-peak",
             "Connected",
@@ -238,52 +232,7 @@
             "Connected",
             "Connected",
             "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Unidirectional",
-            "Unidirectional",
-            "Unidirectional",
-            "Unidirectional",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Unidirectional",
-            "Unidirectional",
-            "Unidirectional",
-            "Unidirectional",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Wait-peak",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected",
-            "Connected"
+            "Connected"            
           ],
           "throughput": {
             "L1": {
@@ -298,7 +247,7 @@
             }
           },
           "uptime": 367,
-          "mac-address": "00:0a:95:9d:68:0%.2d"
+          "mac-address": "00:0a:95:9d:68:%002d"
         },
         "uplink": {
           "override": {},
