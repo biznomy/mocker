@@ -329,55 +329,55 @@
             "rid": 1,
             "snr": {
               "average": {
-                "lower": "3.0f",
-                "upper": "10.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "current": {
-                "lower": "3.0f",
-                "upper": "10.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "maximum": {
-                "lower": "3.0f",
-                "upper": "10.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "minimum": {
-                "lower": "3.0f",
-                "upper": "10.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "variance": {
-                "lower": "3.0f",
-                "upper": "10.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               }
             },
             "snr-dl": {
               "average": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "current": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "maximum": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "minimum": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               },
               "variance": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "2.0f",
+                "upper": "5.0f",
                 "flactuation": "2.0f"
               }
             },

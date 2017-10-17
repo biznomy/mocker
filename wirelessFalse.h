@@ -25,7 +25,7 @@ using Poco::Util::Application;
 #include "Poco/AutoPtr.h"
 
 long false_time_value;
-static Poco::JSON::Array constStreams;
+Poco::JSON::Array constStreams;
 class WirelessFalse{
 
 private :
@@ -239,7 +239,7 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 			remote.set("downlink", downlink);
 
 			remote.set("id", Poco::format("%d", i));
-			remote.set("name", Poco::format("SJC-%0003d", i));
+			remote.set("name", Poco::format("SJC-%0003d", getRandom(1, 15)));
 
 			Poco::JSON::Object status;
 			status.set("throughput", blank);
@@ -271,8 +271,7 @@ void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::AutoPtr<Poco::Util::JSON
 		stream.set("id", Poco::format("%d", variable));
 		std::string fetchQAM = Poco::format("wirelessFalse.wireless.remotes.downlink.streams.mcs[%d]", variable);
 		stream.set("mcs", pConf->getString(fetchQAM));
-		int weight = pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max;
-		stream.set("weight", Poco::format("%d", getRandom(weight - 5, weight + 5)));
+		stream.set("weight", Poco::format("%d", pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max));
 		constStreams.add(stream);
 	}
 }
