@@ -329,28 +329,28 @@
             "rid": 1,
             "snr": {
               "average": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "3.0f",
+                "upper": "10.0f",
                 "flactuation": "2.0f"
               },
               "current": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "3.0f",
+                "upper": "10.0f",
                 "flactuation": "2.0f"
               },
               "maximum": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "3.0f",
+                "upper": "10.0f",
                 "flactuation": "2.0f"
               },
               "minimum": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "3.0f",
+                "upper": "10.0f",
                 "flactuation": "2.0f"
               },
               "variance": {
-                "lower": "22.0f",
-                "upper": "25.0f",
+                "lower": "3.0f",
+                "upper": "10.0f",
                 "flactuation": "2.0f"
               }
             },

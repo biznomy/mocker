@@ -270,11 +270,8 @@ void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::AutoPtr<Poco::Util::JSON
 		Poco::JSON::Object stream;
 		stream.set("id", Poco::format("%d", variable));
 		std::string fetchQAM = Poco::format("wirelessFalse.wireless.remotes.downlink.streams.mcs[%d]", variable);
-		cout << fetchQAM << endl;
 		stream.set("mcs", pConf->getString(fetchQAM));
-
 		int weight = pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max;
-
 		stream.set("weight", Poco::format("%d", getRandom(weight - 5, weight + 5)));
 		constStreams.add(stream);
 	}

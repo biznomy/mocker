@@ -51,6 +51,7 @@ public :
 	void generateDouble(Poco::JSON::Object &object, std::string key, double lower, double upper, double fluctuation);
 
 	void getWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
+	void generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation, int index);
 };
 
 
@@ -96,6 +97,17 @@ void WirelessTrue::generateInteger(Poco::JSON::Object &object, std::string key, 
  **/
 void WirelessTrue::generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation){
 	object.set(key, Poco::NumberFormatter::format(Mocker::getRandomMeanFloat(lower, upper, fluctuation)));
+}
+/**
+ * param [&object : Poco::JSON::Object address]
+ * param [key : std:string]
+ * param [lower : float -> lowest possible value]
+ * param [upper : float -> upper possible value]
+ * param [fluctuation : float -> fluctuation (around mean: (lower+upper)/2) possible value]
+ * return void
+ **/
+void WirelessTrue::generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation, int index){
+	object.set(key, Poco::NumberFormatter::format(Mocker::getRandomMeanFloat(lower * index, upper * index, fluctuation * index)));
 }
 /**
  * param [&object : Poco::JSON::Object address]
@@ -321,19 +333,19 @@ void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco:
 
 
 			Poco::JSON::Object snr;
-			generateFloat(snr, "average", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.flactuation")));
-			generateFloat(snr, "current", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.flactuation")));
-			generateFloat(snr, "maximum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.flactuation")));
-			generateFloat(snr, "minimum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.flactuation")));
-			generateFloat(snr, "variance", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.flactuation")));
+			generateFloat(snr, "average", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.flactuation")), c[x][z]);
+			generateFloat(snr, "current", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.flactuation")), c[x][z]);
+			generateFloat(snr, "maximum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.flactuation")), c[x][z]);
+			generateFloat(snr, "minimum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.flactuation")), c[x][z]);
+			generateFloat(snr, "variance", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.flactuation")), c[x][z]);
 			obj.set("snr", snr);
 
 			Poco::JSON::Object snr_dl;
-			generateFloat(snr_dl, "average", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.average.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.average.flactuation")));
-			generateFloat(snr_dl, "current", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.current.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.current.flactuation")));
-			generateFloat(snr_dl, "maximum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.maximum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.maximum.flactuation")));
-			generateFloat(snr_dl, "minimum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.minimum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.minimum.flactuation")));
-			generateFloat(snr_dl, "variance", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr.variance.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.variance.flactuation")));
+			generateFloat(snr_dl, "average", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.average.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.average.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.average.flactuation")));
+			generateFloat(snr_dl, "current", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.current.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.current.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.current.flactuation")));
+			generateFloat(snr_dl, "maximum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.maximum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.maximum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.maximum.flactuation")));
+			generateFloat(snr_dl, "minimum", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.minimum.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.minimum.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.minimum.flactuation")));
+			generateFloat(snr_dl, "variance", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.variance.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.variance.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.snr-dl.variance.flactuation")));
 			obj.set("snr-dl", snr_dl);
 
 
