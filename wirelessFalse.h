@@ -239,7 +239,7 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 			remote.set("downlink", downlink);
 
 			remote.set("id", Poco::format("%d", i));
-			remote.set("name", Poco::format("SJC-%0003d", getRandom(1, 15)));
+			remote.set("name", Poco::format("SJC-%0003d", (i+1)*10));
 
 			Poco::JSON::Object status;
 			status.set("throughput", blank);

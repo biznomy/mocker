@@ -413,19 +413,19 @@
               },
               "tx": {
                 "capacity": {
-                  "lower": "1200",
-                  "upper": "12600",
-                  "flactuation": "200"
+                  "lower": "12000",
+                  "upper": "126000",
+                  "flactuation": "2000"
                 },
                 "frames": {
-                  "lower": "12000",
-                  "upper": "12600",
-                  "flactuation": "200"
+                  "lower": "120000",
+                  "upper": "126000",
+                  "flactuation": "2000"
                 },
                 "rate": {
-                  "lower": "19400",
-                  "upper": "19700",
-                  "flactuation": "200"
+                  "lower": "194000",
+                  "upper": "197000",
+                  "flactuation": "2000"
                 }
               }
             }
