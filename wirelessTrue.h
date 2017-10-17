@@ -107,7 +107,7 @@ void WirelessTrue::generateFloat(Poco::JSON::Object &object, std::string key, fl
  * return void
  **/
 void WirelessTrue::generateFloat(Poco::JSON::Object &object, std::string key, float lower, float upper, float fluctuation, int index){
-	object.set(key, Poco::NumberFormatter::format(Mocker::getRandomMeanFloat(lower * index, upper * index, fluctuation * index)));
+	object.set(key, Poco::NumberFormatter::format(Mocker::getRandomMeanFloat(lower * index, upper * index, fluctuation)));
 }
 /**
  * param [&object : Poco::JSON::Object address]
