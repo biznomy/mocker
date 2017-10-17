@@ -70,7 +70,7 @@ Poco::AutoPtr<Poco::Util::JSONConfiguration> TempData::instanceConf(std::string 
 
 TempData *TempData::instance() {
 	if (!s_instance){
-		s_instance = new TempData("/opt/otfs/install/etc/mocker.8.X.json");
+		s_instance = new TempData("/opt/otfs/install/etc/mocker.9.X.json");
 	}
 	return s_instance;
 }

@@ -279,11 +279,13 @@ void WirelessTrue::getStatusWirelessTrue(Poco::JSON::Object &status, Poco::AutoP
 
 void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
+	//This 2 dimensional array represents mapping of cpe and streams
+	// currently this has 4 streams ...
 	int c[10][10] = {
 			{1,2,3,4,6,7,8,9,10,0},
 			{1,2,4,6,7,8,0,0,0,0},
-			{1,4,6,8,0,0,0,0,0,0},
-			{1,6,8,0,0,0,0,0,0,0}
+			{1,4,6,8,9,0,0,0,0,0},
+			{1,5,6,8,10,0,0,0,0,0}
 	};
 
 	int x = 0;
@@ -301,15 +303,7 @@ void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco:
 			Poco::JSON::Object ber;
 			Poco::JSON::Object codeword;
 
-
-
 			generateFloat(codeword, "correctable", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.correctable.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.correctable.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.correctable.flactuation")));
-
-
-
-
-
-
 			generateFloat(codeword, "uncorrectable", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.uncorrectable.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.uncorrectable.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.uncorrectable.flactuation")));
 			generateFloat(codeword, "total", Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.total.lower")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.total.upper")), Mocker::getFloat(pConf->getString("wirelessTrue.wireless.status.rstreams.remotes.ber.codeword.total.flactuation")));
 			ber.set("codeword", codeword);
