@@ -384,48 +384,48 @@
             "throughput": {
               "errors": {
                 "frames": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "100",
+                  "upper": "200",
+                  "flactuation": "20"
                 },
                 "rate": {
-                  "lower": "1000",
-                  "upper": "2000",
-                  "flactuation": "200"
+                  "lower": "100",
+                  "upper": "200",
+                  "flactuation": "20"
                 }
               },
               "rx": {
                 "capacity": {
-                  "lower": "12000",
-                  "upper": "126000",
-                  "flactuation": "2000"
+                  "lower": "1200",
+                  "upper": "12600",
+                  "flactuation": "200"
                 },
                 "frames": {
-                  "lower": "120000",
-                  "upper": "126000",
-                  "flactuation": "2000"
+                  "lower": "12000",
+                  "upper": "12600",
+                  "flactuation": "200"
                 },
                 "rate": {
-                  "lower": "194000",
-                  "upper": "197000",
-                  "flactuation": "2000"
+                  "lower": "19400",
+                  "upper": "19700",
+                  "flactuation": "200"
                 }
               },
               "tx": {
                 "capacity": {
-                  "lower": "12000",
-                  "upper": "126000",
-                  "flactuation": "2000"
+                  "lower": "1200",
+                  "upper": "12600",
+                  "flactuation": "200"
                 },
                 "frames": {
-                  "lower": "120000",
-                  "upper": "126000",
-                  "flactuation": "2000"
+                  "lower": "12000",
+                  "upper": "12600",
+                  "flactuation": "200"
                 },
                 "rate": {
-                  "lower": "194000",
-                  "upper": "197000",
-                  "flactuation": "2000"
+                  "lower": "19400",
+                  "upper": "19700",
+                  "flactuation": "200"
                 }
               }
             }
