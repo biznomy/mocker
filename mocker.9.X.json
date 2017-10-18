@@ -80,7 +80,7 @@
         "downlink": {
           "streams": {
             "id": "1",
-            "mcs": ["QAM4", "QAM8", "QAM16", "QAM64"],
+            "mcs": ["QAM4", "QAM8", "QAM16", "QAM512", "QAM1024", "QAM64", "QAM128", "QAM256", "QAM1024", "QAM64"],
             "weight": "100"
           }
         },
@@ -96,7 +96,7 @@
           },
           "streams": {
             "id": "1",
-            "mcs": ["QAM4", "QAM8", "QAM16", "QAM64"],
+            "mcs": ["QAM4", "QAM8", "QAM16", "QAM64", "QAM256", "QAM512", "QAM1024", "QAM256", "QAM1024", "QAM64"],
             "weight": "100"
           }
         }
