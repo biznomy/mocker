@@ -198,11 +198,18 @@ void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::Auto
 	Poco::JSON::Array antenna;
 	Poco::JSON::Object antennaObj;
 
-	antennaObj.set("antennaID", pConf->getString("wirelessFalse.wireless.radio.antenna.antennaID"));
-	antennaObj.set("rx-gain", pConf->getString("wirelessFalse.wireless.radio.antenna.rx-gain"));
+	antennaObj.set("antennaID", pConf->getString("wirelessFalse.wireless.radio.antenna[0].antennaID"));
+	antennaObj.set("rx-gain", pConf->getString("wirelessFalse.wireless.radio.antenna[0].rx-gain"));
 	antennaObj.set("status", blank);
-	antennaObj.set("tx-attenuation", pConf->getString("wirelessFalse.wireless.radio.antenna.tx-attenuation"));
+	antennaObj.set("tx-attenuation", pConf->getString("wirelessFalse.wireless.radio.antenna[0].tx-attenuation"));
 	antenna.add(antennaObj);
+
+	antennaObj.set("antennaID", pConf->getString("wirelessFalse.wireless.radio.antenna[1].antennaID"));
+	antennaObj.set("rx-gain", pConf->getString("wirelessFalse.wireless.radio.antenna[1].rx-gain"));
+	antennaObj.set("status", blank);
+	antennaObj.set("tx-attenuation", pConf->getString("wirelessFalse.wireless.radio.antenna[1].tx-attenuation"));
+	antenna.add(antennaObj);
+
 	object.set("antenna", antenna);
 
 	object.set("automatic-gain", pConf->getString("wirelessFalse.wireless.radio.automatic-gain"));

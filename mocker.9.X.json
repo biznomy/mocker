@@ -55,12 +55,20 @@
       },
       "radio": {
         "admin-mode": "disable",
-        "antenna": {
+        "antenna": [
+        {
           "antennaID": "0",
           "rx-gain": "30.0",
           "status": {},
           "tx-attenuation": "15000.0"
         },
+        {
+          "antennaID": "1",
+          "rx-gain": "30.0",
+          "status": {},
+          "tx-attenuation": "15000.0"
+        }
+        ],
         "automatic-gain": "on",
         "bandwidth": "2x20MHz",
         "beam-id": "1",
@@ -80,7 +88,18 @@
         "downlink": {
           "streams": {
             "id": "1",
-            "mcs": ["QAM4", "QAM8", "QAM16", "QAM512", "QAM1024", "QAM64", "QAM128", "QAM256", "QAM1024", "QAM64"],
+            "mcs": [
+              "QAM4",
+              "QAM8",
+              "QAM16",
+              "QAM512",
+              "QAM1024",
+              "QAM64",
+              "QAM128",
+              "QAM256",
+              "QAM1024",
+              "QAM64"
+            ],
             "weight": "100"
           }
         },
@@ -96,7 +115,18 @@
           },
           "streams": {
             "id": "1",
-            "mcs": ["QAM4", "QAM8", "QAM16", "QAM64", "QAM256", "QAM512", "QAM1024", "QAM256", "QAM1024", "QAM64"],
+            "mcs": [
+              "QAM4",
+              "QAM8",
+              "QAM16",
+              "QAM64",
+              "QAM256",
+              "QAM512",
+              "QAM1024",
+              "QAM256",
+              "QAM1024",
+              "QAM64"
+            ],
             "weight": "100"
           }
         }
@@ -198,13 +228,22 @@
       "interference-detection": {},
       "phy": {},
       "radio": {
-        "antenna": {
-          "antennaID": "0",
-          "status": {
-            "rx-gain": "30.0",
-            "rssi": "-46.0"
+        "antenna": [
+          {
+            "antennaID": "0",
+            "status": {
+              "rx-gain": "30.0",
+              "rssi": "-46.0"
+            }
+          },
+          {
+            "antennaID": "1",
+            "status": {
+              "rx-gain": "33.0",
+              "rssi": "-43.0"
+            }
           }
-        },
+        ],
         "status": {
           "align-level": "0",
           "bandwidth": "2x20MHz",
@@ -232,7 +271,7 @@
             "Connected",
             "Connected",
             "Connected",
-            "Connected"            
+            "Connected"
           ],
           "throughput": {
             "L1": {

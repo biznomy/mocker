@@ -190,17 +190,21 @@ void WirelessTrue::getRadioWirelessTrue(Poco::JSON::Object &object, Poco::AutoPt
 //	object.set("admin-mode", pConf->getString("wirelessTrue.wireless.radio.admin-mode"));
 
 	Poco::JSON::Array antenna;
+
 	Poco::JSON::Object antennaObj;
-
-	antennaObj.set("antennaID", pConf->getString("wirelessTrue.wireless.radio.antenna.antennaID"));
-
+	antennaObj.set("antennaID", pConf->getString("wirelessTrue.wireless.radio.antenna[0].antennaID"));
 	Poco::JSON::Object antennaStatus;
-	antennaStatus.set("rssi", pConf->getString("wirelessTrue.wireless.radio.antenna.status.rssi"));
-	antennaStatus.set("rx-gain", pConf->getString("wirelessTrue.wireless.radio.antenna.status.rx-gain"));
-
+	antennaStatus.set("rssi", pConf->getString("wirelessTrue.wireless.radio.antenna[0].status.rssi"));
+	antennaStatus.set("rx-gain", pConf->getString("wirelessTrue.wireless.radio.antenna[0].status.rx-gain"));
 	antennaObj.set("status", antennaStatus);
-
 	antenna.add(antennaObj);
+
+	antennaObj.set("antennaID", pConf->getInt("wirelessTrue.wireless.radio.antenna[1].antennaID"));
+	antennaStatus.set("rssi", pConf->getString("wirelessTrue.wireless.radio.antenna[1].status.rssi"));
+	antennaStatus.set("rx-gain", pConf->getString("wirelessTrue.wireless.radio.antenna[1].status.rx-gain"));
+	antennaObj.set("status", antennaStatus);
+	antenna.add(antennaObj);
+
 	object.set("antenna", antenna);
 
 	Poco::JSON::Object status;
