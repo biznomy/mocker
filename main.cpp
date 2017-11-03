@@ -40,35 +40,41 @@ using Poco::Util::HelpFormatter;
 using Poco::Path;
 Path p;
 
-class PageRequestHandler: public HTTPRequestHandler
-	/// Return a HTML document with some JavaScript creating
-	/// a WebSocket connection.
-{
+/**
+ * HTTPRequestHandler return response for http request
+ */
+class PageRequestHandler: public HTTPRequestHandler{
 public:
-	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
-	{
+	/**
+	 * Handle request for http request override from HttpRequestHandler
+	 * @param request
+	 * @param response
+	 */
+	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response){
 		response.setChunkedTransferEncoding(true);
 		response.setContentType("text/html");
+		//define the response send as stream
 		std::ostream& ostr = response.send();
 
+		// JSON object for sending response
 		Poco::JSON::Object testObject;
 		TempData::instance()->getData(testObject);
 		std::stringstream ss;
 		testObject.stringify(ss, 2, 2);
-
 		ostr << ss.str() << endl;
 	}
 };
 
 
-class WebSocketRequestHandler: public HTTPRequestHandler
-	/// Handle a WebSocket connection.
-{
+/**
+ * HTTPRequestHandler return response for websocket request
+ */
+class WebSocketRequestHandler: public HTTPRequestHandler{
 public:
 	void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response){
+		//instance use for logging
 		Application& app = Application::instance();
-		try
-		{
+		try{
 			WebSocket ws(request, response);
 			app.logger().information("WebSocket connection established.");
 			char buffer[1024];
@@ -76,19 +82,15 @@ public:
 			int n;
 			n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 			do{
-
 				Poco::JSON::Object testObject;
 				TempData::instance()->getData(testObject);
 				std::stringstream ss;
 				testObject.stringify(ss, 2, 2);
 				ws.sendFrame(ss.str().c_str(), ss.str().size(), flags);
 				usleep(SAMPLE_INTERVAL);
-
 			}while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
 			app.logger().information("WebSocket connection closed.");
-		}
-		catch (WebSocketException& exc)
-		{
+		}catch (WebSocketException& exc){
 			app.logger().log(exc);
 			switch (exc.code())
 			{
@@ -200,7 +202,9 @@ protected:
 
 
 			HTTPServerParams::Ptr params = new HTTPServerParams;
+			//Max Number of Client can stay in queue to connect
 			params->setMaxQueued(20);
+			//Max Number of Client can connect to server
 			params->setMaxThreads(20);
 
 			// set-up a HTTPServer instance

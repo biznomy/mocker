@@ -28,11 +28,13 @@ using Poco::Util::JSONConfiguration;
 
 
 long true_time_value;
+/**
+ * Wireless True info generator
+ */
 class WirelessTrue{
 
 private :
 
-//NOTE Wireless True Start
 	void getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getRadioWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
@@ -40,7 +42,6 @@ private :
 	void getStatusWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void generateBer(Poco::JSON::Object &object, std::string key, int decimalPlaces, double lower, double upper, double fluctuation);
-//NOTE Wireless True End
 
 public :
 	Poco::DateTime date;
@@ -56,7 +57,9 @@ public :
 };
 
 
-
+/**
+ * Constructor get time when app start
+ */
 WirelessTrue::~WirelessTrue() {
 	Poco::Timestamp thisnow;
 	true_time_value = thisnow.epochTime();
@@ -144,6 +147,11 @@ void WirelessTrue::generateDouble(Poco::JSON::Object &object, std::string key, d
 	object.set(key, Poco::format("%ld", Mocker::getRandomMeanDouble(lower, upper, fluctuation)));
 }
 
+/**
+ * get Wireless true info from configuration file
+ * @param object resulted info for wireless true
+ * @param pConf configuration variable
+ */
 void WirelessTrue::getWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	//blank object
@@ -170,7 +178,11 @@ void WirelessTrue::getWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poc
 	object.set("uplink", blank);
 }
 
-
+/**
+ * get wireless hub data from config
+ * @param object
+ * @param pConf
+ */
 void WirelessTrue::getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object status;
@@ -184,6 +196,11 @@ void WirelessTrue::getHubWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<
 
 }
 
+/**
+ * get wireless radio data from config
+ * @param object
+ * @param pConf
+ */
 void WirelessTrue::getRadioWirelessTrue(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object blank;
@@ -210,6 +227,12 @@ void WirelessTrue::getRadioWirelessTrue(Poco::JSON::Object &object, Poco::AutoPt
 	status.set("tx-power", pConf->getString("wirelessTrue.wireless.radio.status.tx-power"));
 	object.set("status", status);
 }
+
+/**
+ * get wireless remote generated as per the configuration
+ * @param array I/O
+ * @param pConf : Configuration
+ */
 void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	Poco::JSON::Object blank;
 	Poco::JSON::Object remote;
@@ -253,9 +276,15 @@ void WirelessTrue::getRemoteWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr
 	}
 }
 
+/**
+ * get wireless remote stream data
+ * @param streams I/O
+ * @param pConf configuration variable
+ * @param i : initialization from stream
+ * @param max : max size of stream length
+ */
 void WirelessTrue::getRemoteStreamsWirelessTrue(Poco::JSON::Array& streams, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max) {
 	Poco::JSON::Object stream;
-//	int count = getRandom(1, 2);
 	int count = 3;
 	int j=0;
 	for(;j<=count; ++j){
@@ -265,7 +294,11 @@ void WirelessTrue::getRemoteStreamsWirelessTrue(Poco::JSON::Array& streams, Poco
 
 }
 
-
+/**
+ * get wireless status
+ * @param status I/O
+ * @param pConf configuration variable
+ */
 void WirelessTrue::getStatusWirelessTrue(Poco::JSON::Object &status, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	status.set("admin-state", pConf->getString("wirelessTrue.wireless.status.admin-state"));
@@ -291,6 +324,11 @@ void WirelessTrue::getStatusWirelessTrue(Poco::JSON::Object &status, Poco::AutoP
 
 }
 
+/**
+ * get wireless status streams data , currently static
+ * @param array : I/O
+ * @param pConf configuration variable
+ */
 void WirelessTrue::getStatusRStreamsWirelessTrue(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	//This 2 dimensional array represents mapping of cpe and streams

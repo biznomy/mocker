@@ -56,7 +56,9 @@ public :
 };
 
 
-
+/**
+ * wireless false constructor with initial time
+ */
 WirelessFalse::~WirelessFalse() {
 	Poco::Timestamp thisnow;
 	false_time_value = thisnow.epochTime();
@@ -108,7 +110,11 @@ void WirelessFalse::generateDouble(Poco::JSON::Object &object, std::string key, 
 }
 
 
-
+/**
+ * get wireless false
+ * @param object I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	//blank object
@@ -154,17 +160,31 @@ void WirelessFalse::getWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<P
 	object.set("uplink", blank);
 }
 
-
+/**
+ * get wireless chest
+ * @param object I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getChestWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	object.set("dfe-disable", pConf->getString("wirelessFalse.wireless.chest.dfe-disable"));
 	object.set("dfe-len", pConf->getString("wirelessFalse.wireless.chest.dfe-len"));
 	object.set("doppler-bw", pConf->getString("wirelessFalse.wireless.chest.doppler-bw"));
 }
 
+/**
+ * get wireless cpe (radio id)
+ * @param object I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getCpeWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	object.set("id", pConf->getString("wirelessFalse.wireless.cpe.id"));
 }
 
+/**
+ * get wireless hub
+ * @param object I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getHubWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	Poco::JSON::Object blank;
 	object.set("name", pConf->getString("wirelessFalse.wireless.hub.name"));
@@ -175,13 +195,22 @@ void WirelessFalse::getHubWirelessFalse(Poco::JSON::Object &object, Poco::AutoPt
 	object.set("status", blank);
 }
 
-
+/**
+ * get wireless interference-wireless
+ * @param object
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getInterferenceDetectionWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	object.set("admin-mode", pConf->getString("wirelessFalse.wireless.interference-detection.admin-mode"));
 	object.set("threshold", pConf->getString("wirelessFalse.wireless.interference-detection.threshold"));
 }
 
+/**
+ * get wireless phy
+ * @param object I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getPhyWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	object.set("channel-post", pConf->getString("wirelessFalse.wireless.phy.channel-post"));
 	object.set("channel-pre", pConf->getString("wirelessFalse.wireless.phy.channel-pre"));
@@ -189,6 +218,11 @@ void WirelessFalse::getPhyWirelessFalse(Poco::JSON::Object &object, Poco::AutoPt
 	object.set("cyclic-prefix", pConf->getString("wirelessFalse.wireless.phy.cyclic-prefix"));
 }
 
+/**
+ * get wireless radio
+ * @param object I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object blank;
@@ -218,6 +252,11 @@ void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::Auto
 
 }
 
+/**
+ * get wireless remote
+ * @param array I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 	Poco::JSON::Object blank;
 	Poco::JSON::Object remote;
@@ -260,7 +299,13 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 	}
 }
 
-
+/**
+ * get wireless remote stream
+ * @param pConf configuration variable
+ * @param i
+ * @param max
+ * @param streamC
+ */
 void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max, const int streamC) {
 	if(constStreams.size()==4){
 		return;
@@ -276,6 +321,11 @@ void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::AutoPtr<Poco::Util::JSON
 	}
 }
 
+/**
+ * get wireless status
+ * @param status I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getStatusWirelessFalse(Poco::JSON::Object &status, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	Poco::JSON::Object blank;
@@ -291,6 +341,11 @@ void WirelessFalse::getStatusWirelessFalse(Poco::JSON::Object &status, Poco::Aut
 
 }
 
+/**
+ * get wireless status r-streams
+ * @param array I/O
+ * @param pConf configuration variable
+ */
 void WirelessFalse::getStatusRStreamsWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf){
 
 	//This 2 dimensional array represents mapping of cpe and streams

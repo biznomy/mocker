@@ -57,6 +57,11 @@ public :
 
 TempData *TempData::s_instance = 0;
 
+/**
+ * load configuration file to generate data ONCE only
+ * @param path
+ * @return
+ */
 Poco::AutoPtr<Poco::Util::JSONConfiguration> TempData::instanceConf(std::string path) {
 	Poco::AutoPtr<Poco::Util::JSONConfiguration> temp;
 		try{
@@ -67,7 +72,10 @@ Poco::AutoPtr<Poco::Util::JSONConfiguration> TempData::instanceConf(std::string 
 	return temp;
 }
 
-
+/**
+ *	Create Singleton instance
+ * @return instance(singleton) of Class
+ */
 TempData *TempData::instance() {
 	if (!s_instance){
 		s_instance = new TempData("/opt/otfs/install/etc/mocker.9.X.json");
@@ -137,7 +145,11 @@ void TempData::generateDouble(Poco::JSON::Object &object, std::string key, doubl
 }
 
 
-
+/**
+ * load wireless true data from getWirelessTrue and
+ * set to key wireless and set to param JSON object
+ * @param object
+ */
 void TempData::getWirelessTrue(Poco::JSON::Object &object){
 	WirelessTrue wirelessTrue;
 	Poco::JSON::Object wireless;
@@ -145,6 +157,11 @@ void TempData::getWirelessTrue(Poco::JSON::Object &object){
 	object.set("wireless", wireless);
 }
 
+/**
+ * load wireless false data from getWirelessFalse and
+ * set to key wireless and set to param JSON object
+ * @param object
+ */
 void TempData::getWirelessFalse(Poco::JSON::Object &object){
 	WirelessFalse wirelessFalse;
 	Poco::JSON::Object wireless;
@@ -152,6 +169,11 @@ void TempData::getWirelessFalse(Poco::JSON::Object &object){
 	object.set("wireless", wireless);
 }
 
+/**
+ * load system data from configuration variable and
+ * set to key system-sw and set to param JSON object
+ * @param object
+ */
 void TempData::getSystem(Poco::JSON::Object &object){
 	Poco::JSON::Object board;
 	board.set("board-version", this->pConf->getString("system-board.board-version"));
@@ -162,6 +184,11 @@ void TempData::getSystem(Poco::JSON::Object &object){
 	object.set("system-sw", sw);
 }
 
+/**
+ * load network data from configuration variable and
+ * set to keys and set to param JSON object
+ * @param object
+ */
 void TempData::getIpv4(Poco::JSON::Object &object){
 
 	object.set("address", this->pConf->getString("ipv4.address"));
@@ -169,12 +196,20 @@ void TempData::getIpv4(Poco::JSON::Object &object){
 
 }
 
+/**
+ * load ram, cpu amd disk info
+ * @param object
+ */
 void TempData::getSystemInfo(Poco::JSON::Object &object){
 	printRamInfo(object);
 	cpuStatus(object);
 	printSysDsk(object);
 }
 
+/**
+ * overall data for wireless true/false, system, memory, inter-net address
+ * @param object
+ */
 void TempData::getData(Poco::JSON::Object &object){
 	object.set("connection-pii", this->pConf->getString("connection-pii"));
 	object.set("throughput-beam-capacity", this->pConf->getString("throughput-beam-capacity"));

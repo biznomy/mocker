@@ -23,7 +23,10 @@ using Poco::JSON::Object;
 struct sysinfo si;
 struct statvfs sd;
 
-
+/**
+ * add ram info , current values, in MB
+ * @param object
+ */
 void printRamInfo(Object& object){
 
 	sysinfo (&si);
@@ -32,6 +35,9 @@ void printRamInfo(Object& object){
 	object.set("mem-free-ram", si.freeram/(1024 * 1024));
 }
 
+/**
+ * add cpu info, current info
+ */
 void printCPUInfo(){
 
 	cout << "Processor "<< sysconf(_SC_NPROCESSORS_ONLN) << endl; /* Number of processesor */
@@ -39,6 +45,10 @@ void printCPUInfo(){
 
 }
 
+/**
+ * add system info
+ * @param object
+ */
 void printSysInfo(Object& object){
 
 	object.set("os-name", Environment::osName());
@@ -52,6 +62,10 @@ void printSysInfo(Object& object){
 
 }
 
+/**
+ * add system drive info, in MB
+ * @param object
+ */
 void printSysDsk(Object& object){
 
 	if((statvfs("/",&sd)) < 0 ) {

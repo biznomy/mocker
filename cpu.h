@@ -47,6 +47,10 @@ size_t GetActiveTime(const CPUData & e);
 
 std::pair<std::string, std::string> PrintStats(const std::vector<CPUData> & entries1, const std::vector<CPUData> & entries2);
 
+/**
+ * add cpu info
+ * @param object
+ */
 void cpuStatus(Object& object){
 	std::vector<CPUData> entries1;
 	std::vector<CPUData> entries2;
