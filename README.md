@@ -34,3 +34,73 @@
 **Test data Available At:**
 
   http://localhost:8383
+
+**Mocker Data branch 9.x.x specific NOTES**
+---------------
+
+**Installation Instruction**
+    
+    step 1 : git clone
+    step 2 : change directory to mocker
+    step 3 : cp mocker.9.json /**(config file)**/ to configuration location
+    step 4 : mkdir bin
+    step 5 : make clean install
+    step 6 : ./bin/main
+
+Initial request is received on http request handler and websocket depend on protocol used
+
+**HTTP** for port 8383
+
+Request
+```http://localhost:port/```
+
+Response single response as per the config and schema
+```
+{
+  "sysInfoFalse": {
+    "cpu-perc-active": "7.31707",
+    "cpu-perc-idle": "92.6829",
+    "dsk-free-size": 12198,
+    "dsk-total-size": 100763,
+    "mem-free-ram": 2256,
+    "mem-total-ram": 7833,
+    "sys-uptime": 14774
+  },
+  "system-board": {
+ ...
+ ...
+ ...
+ }
+  }
+}
+```
+
+**Websocket** for port 8383
+
+Request 
+```ws://localhost:8383``` 
+And 
+    
+>SEND SOME RANDOM TEXT
+
+Response iterative resonse each second
+
+```
+{
+  "sysInfoFalse": {
+    "cpu-perc-active": "7.31707",
+    "cpu-perc-idle": "92.6829",
+    "dsk-free-size": 12198,
+    "dsk-total-size": 100763,
+    "mem-free-ram": 2256,
+    "mem-total-ram": 7833,
+    "sys-uptime": 14774
+  },
+  "system-board": {
+ ...
+ ...
+ ...
+ }
+  }
+}
+```
