@@ -38,7 +38,8 @@ private :
 	void getPhyWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getRadioWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
-	void getRemoteStreamsWirelessFalse(Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max, const int streamC);
+	void getRemoteStreamsDownlinkWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max, const int streamC);
+	void getRemoteStreamsUplinkWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max, const int streamC);
 	void getStatusWirelessFalse(Poco::JSON::Object &object, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 	void getStatusRStreamsWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf);
 
@@ -231,11 +232,18 @@ void WirelessFalse::getRadioWirelessFalse(Poco::JSON::Object &object, Poco::Auto
 	Poco::JSON::Array antenna;
 	Poco::JSON::Object antennaObj;
 
-	antennaObj.set("antennaID", pConf->getString("wirelessFalse.wireless.radio.antenna.antennaID"));
-	antennaObj.set("rx-gain", pConf->getString("wirelessFalse.wireless.radio.antenna.rx-gain"));
+	antennaObj.set("antennaID", pConf->getString("wirelessFalse.wireless.radio.antenna[0].antennaID"));
+	antennaObj.set("rx-gain", pConf->getString("wirelessFalse.wireless.radio.antenna[0].rx-gain"));
 	antennaObj.set("status", blank);
-	antennaObj.set("tx-attenuation", pConf->getString("wirelessFalse.wireless.radio.antenna.tx-attenuation"));
+	antennaObj.set("tx-attenuation", pConf->getString("wirelessFalse.wireless.radio.antenna[0].tx-attenuation"));
 	antenna.add(antennaObj);
+
+	antennaObj.set("antennaID", pConf->getString("wirelessFalse.wireless.radio.antenna[1].antennaID"));
+	antennaObj.set("rx-gain", pConf->getString("wirelessFalse.wireless.radio.antenna[1].rx-gain"));
+	antennaObj.set("status", blank);
+	antennaObj.set("tx-attenuation", pConf->getString("wirelessFalse.wireless.radio.antenna[1].tx-attenuation"));
+	antenna.add(antennaObj);
+
 	object.set("antenna", antenna);
 
 	object.set("automatic-gain", pConf->getString("wirelessFalse.wireless.radio.automatic-gain"));
@@ -271,9 +279,9 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 			remote.set("admin-state", pConf->getString("wirelessFalse.wireless.remotes.admin-state"));
 
 			Poco::JSON::Object downlink;
-
-			this->getRemoteStreamsWirelessFalse(pConf, i, max, streamC);
-			downlink.set("streams", constStreams);
+			Poco::JSON::Array downlinkArray;
+			this->getRemoteStreamsDownlinkWirelessFalse(downlinkArray, pConf, i, max, streamC);
+			downlink.set("streams", downlinkArray);
 
 			remote.set("downlink", downlink);
 
@@ -290,8 +298,9 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 			override.set("timing", pConf->getString("wirelessFalse.wireless.remotes.uplink.override.timing"));
 			uplink.set("override", override);
 
-			this->getRemoteStreamsWirelessFalse(pConf, i, max, streamC);
-			uplink.set("streams", constStreams);
+			Poco::JSON::Array uplinkArray;
+			this->getRemoteStreamsUplinkWirelessFalse(uplinkArray, pConf, i, max, streamC);
+			uplink.set("streams", uplinkArray);
 
 			remote.set("uplink", uplink);
 
@@ -300,25 +309,63 @@ void WirelessFalse::getRemoteWirelessFalse(Poco::JSON::Array &array, Poco::AutoP
 }
 
 /**
- * get wireless remote stream
+ * get wireless remote stream downlink
+ * @param array I/O
  * @param pConf configuration variable
- * @param i
- * @param max
- * @param streamC
+ * @param i : initial index
+ * @param max : count of streams
+ * @param streamC : max size of stream
  */
-void WirelessFalse::getRemoteStreamsWirelessFalse(Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max, const int streamC) {
-	if(constStreams.size()==4){
-		return;
+void WirelessFalse::getRemoteStreamsDownlinkWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max, const int streamC) {
+
+	try{
+
+		int variable = 0;
+		for(; variable < streamC; ++variable){
+			Poco::JSON::Object stream;
+			stream.set("id", Poco::format("%d", variable));
+			std::string fetchQAM = Poco::format("wirelessFalse.wireless.remotes.downlink.streams.mcs[%d]", i-1);
+			stream.set("mcs", pConf->getString(fetchQAM));
+			int weight = pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max;
+			stream.set("weight", getRandom(weight - 5, weight + 5));
+			array.add(stream);
+		}
+
+	}catch(Poco::Exception &e){
+		cout << e.displayText() << endl;
 	}
-	int variable = i-1;
-	for(;variable < streamC; ++variable){
-		Poco::JSON::Object stream;
-		stream.set("id", Poco::format("%d", variable));
-		std::string fetchQAM = Poco::format("wirelessFalse.wireless.remotes.downlink.streams.mcs[%d]", variable);
-		stream.set("mcs", pConf->getString(fetchQAM));
-		stream.set("weight", Poco::format("%d", pConf->getInt("wirelessFalse.wireless.remotes.downlink.streams.weight")/max));
-		constStreams.add(stream);
+
+}
+
+/**
+ * get wireless remote stream uplink
+ * @param array I/O
+ * @param pConf configuration variable
+ * @param i : initial index
+ * @param max : count of streams
+ * @param streamC : max size of stream
+ */
+void WirelessFalse::getRemoteStreamsUplinkWirelessFalse(Poco::JSON::Array &array, Poco::AutoPtr<Poco::Util::JSONConfiguration> pConf, const int i, const int max, const int streamC) {
+
+	try{
+
+		int variable = 0;
+		for(; variable < streamC; ++variable){
+			Poco::JSON::Object stream;
+			stream.set("id", Poco::format("%d", variable));
+			std::string fetchQAM = Poco::format("wirelessFalse.wireless.remotes.uplink.streams.mcs[%d]", i-1);
+			stream.set("mcs", pConf->getString(fetchQAM));
+			int weight = pConf->getInt("wirelessFalse.wireless.remotes.uplink.streams.weight")/max;
+			stream.set("weight", getRandom(weight - 5, weight + 5));
+			array.add(stream);
+		}
+
+	}catch(Poco::Exception &e){
+
+		cout << e.displayText() << endl;
 	}
+
+
 }
 
 /**
