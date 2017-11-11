@@ -1,6 +1,7 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0 -std=c++11 
 #export LD_LIBRARY_PATH=/usr/local/include/Poco:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 BINDIR = ./bin
 
 OBJS =	main.o
