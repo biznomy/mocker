@@ -47,6 +47,14 @@
     step 5 : make clean install
     step 6 : ./bin/main
 
+**NOTE:-** 
+If error while loading shared libraries: libPocoFoundation.so.48: cannot open shared object file: No such file or directory occurs then :
+``` 
+    sudo find / -iname *libraryname*.so*
+    
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/library (either in ~/.bashrc or the Makefile)
+```
+
 Initial request is received on http request handler and websocket depend on protocol used
 
 **HTTP** for port 8383
